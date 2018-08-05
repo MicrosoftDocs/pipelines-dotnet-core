@@ -3,6 +3,7 @@
 For information on how to use this repository, see [.NET Core](https://docs.microsoft.com/vsts/pipelines/languages/dotnet-core).
 
 | Example | Build status |
+|---------|--------------|
 | Build | [![Build status](https://pipelines-docs.visualstudio.com/docs/_apis/build/status/dotnetcore/dotnetcore)](https://pipelines-docs.visualstudio.com/docs/_build/latest?definitionId=1) |
 | Build (YAML) | [![Build status](https://pipelines-docs.visualstudio.com/docs/_apis/build/status/dotnetcore/dotnetcore-yaml)](https://pipelines-docs.visualstudio.com/docs/_build/latest?definitionId=2) |
 | Build and push a Docker image | [![Build status](https://pipelines-docs.visualstudio.com/docs/_apis/build/status/dotnetcore/dotnetcore-dockerhub)](https://pipelines-docs.visualstudio.com/docs/_build/latest?definitionId=3) |
