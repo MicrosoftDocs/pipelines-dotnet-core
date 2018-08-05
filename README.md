@@ -6,8 +6,10 @@ For information on how to use this repository, see [.NET Core](https://docs.micr
 |---------|--------------|
 | Build | [![Build status](https://pipelines-docs.visualstudio.com/docs/_apis/build/status/dotnetcore/dotnetcore)](https://pipelines-docs.visualstudio.com/docs/_build/latest?definitionId=1) |
 | Build (YAML) | [![Build status](https://pipelines-docs.visualstudio.com/docs/_apis/build/status/dotnetcore/dotnetcore-yaml)](https://pipelines-docs.visualstudio.com/docs/_build/latest?definitionId=2) |
-| Build and push a Docker image | [![Build status](https://pipelines-docs.visualstudio.com/docs/_apis/build/status/dotnetcore/dotnetcore-dockerhub)](https://pipelines-docs.visualstudio.com/docs/_build/latest?definitionId=3) |
-| Build and push a Docker image (YAML) | [![Build status](https://pipelines-docs.visualstudio.com/docs/_apis/build/status/dotnetcore/dotnetcore-dockerhub-yaml)](https://pipelines-docs.visualstudio.com/docs/_build/latest?definitionId=4) |
+| Build image and push to Docker Hub | [![Build status](https://pipelines-docs.visualstudio.com/docs/_apis/build/status/dotnetcore/dotnetcore-dockerhub)](https://pipelines-docs.visualstudio.com/docs/_build/latest?definitionId=3) |
+| Build image and push to Docker Hub (YAML) | [![Build status](https://pipelines-docs.visualstudio.com/docs/_apis/build/status/dotnetcore/dotnetcore-dockerhub-yaml)](https://pipelines-docs.visualstudio.com/docs/_build/latest?definitionId=4) |
+| Build image and push to Azure Container Registry | [![Build status](https://pipelines-docs.visualstudio.com/docs/_apis/build/status/dotnetcore/dotnetcore-acr)](https://pipelines-docs.visualstudio.com/docs/_build/latest?definitionId=5) |
+| Build image and push to Azure Container Registry (YAML) | [![Build status](https://pipelines-docs.visualstudio.com/docs/_apis/build/status/dotnetcore/dotnetcore-acr-yaml)](https://pipelines-docs.visualstudio.com/docs/_build/latest?definitionId=6) |
 
 # Contributing
 
