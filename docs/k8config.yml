@@ -1,0 +1,32 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: dotnetcore-sample
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5 
+  template:
+    metadata:
+      labels:
+        app: dotnetcore-sample
+    spec:
+      containers:
+      - name: dotnetcore-sample
+        image: adventworks/dotnetcore-sample
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dotnetcore-sample
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: dotnetcore-sample

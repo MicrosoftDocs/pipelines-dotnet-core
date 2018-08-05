@@ -1,0 +1,10 @@
+# Docker compose file to bring up app and test containers
+# See http://docs.microsoft.com/vsts/pipelines/languages/docker for more information
+sut:
+  build: .
+  dockerfile: docs/Dockerfile.test
+  links:
+    - web
+web:
+  build: .
+  dockerfile: Dockerfile
