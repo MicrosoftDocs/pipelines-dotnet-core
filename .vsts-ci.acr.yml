@@ -1,17 +1,20 @@
 # Build Docker image for this app
 # http://docs.microsoft.com/vsts/pipelines/languages/docker?view=vsts
 queue: Hosted Linux Preview
+
 variables:
   buildConfiguration: 'Release'
+  imageName: '$(Build.DefinitionName):$(Build.BuildId)'
+  # define two more variables dockerId and dockerPassword in the build pipeline in UI
 
 steps:
 - script: |
     dotnet build --configuration $(buildConfiguration)
     dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
     dotnet publish --configuration $(buildConfiguration) --output out
-    docker build -t $(dockerId).azurecr.io/dotnetcore-sample:$BUILD_BUILDID .
+    docker build -t $(dockerId).azurecr.io/$(imageName) .
     docker login -u $(dockerId) -p $pswd $(dockerid).azurecr.io
-    docker push $(dockerId).azurecr.io/dotnetcore-sample:$BUILD_BUILDID
+    docker push $(dockerId).azurecr.io/$(imageName)
   env:
     pswd: $(dockerPassword)
 
