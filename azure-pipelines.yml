@@ -1,8 +1,9 @@
 # Build ASP.NET Core project using Azure Pipelines
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core?view=vsts
 
-queue: 'Hosted Linux Preview'
-
+pool:
+  vmImage: 'Ubuntu 16.04'
+  
 variables:
   buildConfiguration: 'Release'
 

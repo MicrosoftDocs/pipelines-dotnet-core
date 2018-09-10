@@ -1,6 +1,7 @@
 # Build Docker image for this app using Azure Pipelines
 # http://docs.microsoft.com/azure/devops/pipelines/languages/docker?view=vsts
-queue: Hosted Linux Preview
+pool:
+  vmImage: 'Ubuntu 16.04'
 
 variables:
   buildConfiguration: 'Release'
