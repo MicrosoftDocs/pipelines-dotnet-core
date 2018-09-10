@@ -1,5 +1,5 @@
 # Test driver script to be used in a container
-# See http://docs.microsoft.com/vsts/pipelines/languages/docker for more information
+# See http://docs.microsoft.com/azure/devops/pipelines/languages/docker for more information
 sleep 5
 if curl web | grep -q 'ASP.NET Core '; then
   echo "Tests passed!"

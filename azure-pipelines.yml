@@ -1,5 +1,5 @@
-# Build ASP.NET Core project using VSTS
-# https://docs.microsoft.com/vsts/pipelines/languages/dotnet-core?view=vsts
+# Build ASP.NET Core project using Azure Pipelines
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core?view=vsts
 
 queue: 'Hosted Linux Preview'
 

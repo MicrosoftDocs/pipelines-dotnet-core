@@ -1,5 +1,5 @@
-# This Dockerfile is for a test container to demonstrate use of docker-compose with VSTS or TFS 
-# See http://docs.microsoft.com/vsts/pipelines/languages/docker for more information
+# This Dockerfile is for a test container to demonstrate use of docker-compose with Azure Pipelines
+# See http://docs.microsoft.com/azure/devops/pipelines/languages/docker for more information
 
 FROM ubuntu:trusty
 RUN apt-get update && apt-get install -yq curl && apt-get clean
