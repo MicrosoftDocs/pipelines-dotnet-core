@@ -8,14 +8,15 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+
 - script: |
     dotnet build --configuration $(buildConfiguration)
-    dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
+    dotnet test dotnetcore-tests --configuration $(buildConfiguration) -xml
     dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
 
 - task: PublishTestResults@2
   inputs:
-    testRunner: VSTest
-    testResultsFiles: '**/*.trx'
+    testRunner: NUnit
+    testResultsFiles: '**/TestResult.xml'
 
 - task: PublishBuildArtifacts@1
