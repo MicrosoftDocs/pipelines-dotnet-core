@@ -7,6 +7,7 @@ pool:
 variables:
   buildConfiguration: 'Release'
 
+name: ci triggers
 trigger:
 - master
 
