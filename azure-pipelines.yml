@@ -7,6 +7,9 @@ pool:
 variables:
   buildConfiguration: 'Release'
 
+trigger:
+- master
+
 steps:
 - script: |
     dotnet build --configuration $(buildConfiguration)
@@ -18,7 +21,7 @@ steps:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
 
-- task: PublishBuildArtifacts@1
+# - task: PublishBuildArtifacts@1
 
 - task: DotNetCoreCLI@2
   inputs:
