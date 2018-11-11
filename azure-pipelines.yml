@@ -29,3 +29,9 @@ steps:
     publishWebProjects: True
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
+
+- task: AzureRmWebAppDeployment@3
+  inputs:
+    azureSubscription: 'DocTargets'
+    WebAppName: 'pipelines-dotnet-core'
+    Package: $(System.ArtifactsDirectory)/**/*.zip
