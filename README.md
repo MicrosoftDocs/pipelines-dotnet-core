@@ -4,6 +4,7 @@ For information on how to use this repository, see [.NET Core](https://docs.micr
 
 | Example | Build status |
 |---------|--------------|
+| MOJ BUILD | [![Build Status](https://dev.azure.com/marburgegoralex0829/SecondProject/_apis/build/status/EgorAlex0.pipelines-dotnet-core)](https://dev.azure.com/marburgegoralex0829/SecondProject/_build/latest?definitionId=1) |
 | Build | [![Build status](https://dev.azure.com/pipelines-docs/docs/_apis/build/status/dotnetcore/dotnetcore)](https://dev.azure.com/pipelines-docs/docs/_build/latest?definitionId=1) |
 | Build (YAML) | [![Build status](https://dev.azure.com/pipelines-docs/docs/_apis/build/status/dotnetcore/dotnetcore-yaml)](https://dev.azure.com/pipelines-docs/docs/_build/latest?definitionId=2) |
 | Build image and push to Docker Hub | [![Build status](https://dev.azure.com/pipelines-docs/docs/_apis/build/status/dotnetcore/dotnetcore-dockerhub)](https://dev.azure.com/pipelines-docs/docs/_build/latest?definitionId=3) |
