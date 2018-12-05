@@ -20,6 +20,7 @@ steps:
     pswd: $(dockerPassword)
 
 - task: PublishTestResults@2
+  condition: succeededOrFailed()
   inputs:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
