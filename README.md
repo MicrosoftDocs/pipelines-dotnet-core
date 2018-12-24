@@ -1,7 +1,7 @@
 # Sample ASP.NET Core application for Azure Pipelines docs
 
 For information on how to use this repository, see [.NET Core](https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core).
-
+[![Build Status](https://congtrinh097.visualstudio.com/TestDevOpts/_apis/build/status/TestDevOpts-CI-%20Demo-Microsoft?branchName=master)](https://congtrinh097.visualstudio.com/TestDevOpts/_build/latest?definitionId=2?branchName=master)
 | Example | Build status |
 |---------|--------------|
 | Build | [![Build status](https://dev.azure.com/pipelines-docs/docs/_apis/build/status/dotnetcore/dotnetcore)](https://dev.azure.com/pipelines-docs/docs/_build/latest?definitionId=1) |
