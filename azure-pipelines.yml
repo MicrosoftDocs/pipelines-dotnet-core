@@ -22,6 +22,6 @@ steps:
 - task: PublishBuildArtifacts@1
 - task: AzureRmWebAppDeployment@3
   inputs:
-    azureSubscription: 'Free'
+    azureSubscription: 'cbe51fdd-9aa4-4b07-80ae-19a18f425581'
     WebAppName: 'azure-dev-ops-tutorial'
     Package: $(System.ArtifactsDirectory)/**/*.zip
