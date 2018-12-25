@@ -8,6 +8,7 @@ namespace dotnetcore_sample.Controllers
 {
     public class HomeController : Controller
     {
+        // TEST COMMENT
         public IActionResult Index()
         {
             return View();
