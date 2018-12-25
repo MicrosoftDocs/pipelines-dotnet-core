@@ -20,3 +20,8 @@ steps:
     testResultsFiles: '**/*.trx'
 
 - task: PublishBuildArtifacts@1
+- task: AzureRmWebAppDeployment@3
+  inputs:
+    azureSubscription: 'Free'
+    WebAppName: 'azure-dev-ops-tutorial'
+    Package: $(System.ArtifactsDirectory)/**/*.zip
