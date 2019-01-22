@@ -18,9 +18,9 @@ steps:
     # https://www.nuget.org/packages/dotnetsay/
     # dotnet tool install -g dotnetsay
     # dotnetsay
-    dotnet tool install --tool-path . dotnetsay
-    .\dotnetsay
-    displayName: 'Command Line Script'    
+    dotnet tool install  --tool-path . dotnetsay
+    ./dotnetsay
+  displayName: 'Command Line Script'    
 
 # .NET Core
 # Restore NuGet packages.
