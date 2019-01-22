@@ -80,4 +80,18 @@ steps:
 
 # Package and deliver the code 
 # https://docs.microsoft.com/en-us/azure/devops/pipelines/languages/dotnet-core?view=vsts&tabs=yaml#package-and-deliver-your-code
+# This code takes all the files in $(Build.ArtifactStagingDirectory) and upload them as 
+# an artifact of your build. 
 - task: PublishBuildArtifacts@1
+
+# Publish to a NuGet feed
+# To create and publish a NuGet package, add the following snippet:
+- script: dotnet pack /p:PackageVersion=$(version)  # define version variable elsewhere in your pipeline
+
+- task: NuGetCommand@2
+  inputs:
+    command: push
+    nuGetFeedType: external
+    publishFeedCredentials: '<Name of the NuGet service connection>'
+    versioningScheme: byEnvVar
+    versionEnvVar: version
