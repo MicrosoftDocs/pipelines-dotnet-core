@@ -52,7 +52,7 @@ steps:
     arguments: '--configuration $(buildConfiguration)'
 
 # Running dotnet tests
-- script: dotnet test pipelines-dotnet-core --logger trx
+- script: dotnet test dotnetcore-sample.sln --logger trx
 - task: PublishTestResults@2
   condition: succeededOrFailed()
   inputs:
