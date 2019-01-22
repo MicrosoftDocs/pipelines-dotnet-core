@@ -41,3 +41,10 @@ steps:
     testResultsFiles: '**/*.trx'
 
 - task: PublishBuildArtifacts@1
+
+# Use the .NET Core task to run unit tests in your .NET Core solution by using testing frameworks like MSTest, xUnit, and NUnit. 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
