@@ -17,7 +17,10 @@ steps:
     # You can run any dotnet command in your pipeline. The following example shows how to install and use a .NET global tool, dotnetsay:
     # https://www.nuget.org/packages/dotnetsay/
     # dotnet tool install -g dotnetsay
-    # dotnetsay    
+    # dotnetsay
+    dotnet tool install --tool-path . dotnetsay
+    .\dotnetsay
+    displayName: 'Command Line Script'    
 
 # .NET Core
 # Restore NuGet packages.
@@ -26,10 +29,6 @@ steps:
     command: 'restore'
     projects: '**/*.csproj'
     #verbosityRestore: 'detailed' # Options: quiet, minimal, normal, detailed, diagnostic
-
-- script: dotnet tool install -g dotnetsay
-- script: dotnet dotnetsay
-
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
