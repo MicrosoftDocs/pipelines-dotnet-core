@@ -43,8 +43,18 @@ steps:
 - task: PublishBuildArtifacts@1
 
 # Use the .NET Core task to run unit tests in your .NET Core solution by using testing frameworks like MSTest, xUnit, and NUnit. 
+# THere is a warning # #[warning]Project file(s) matching the specified pattern were not found. 
+# https://stackoverflow.com/a/53053739/2773461
 - task: DotNetCoreCLI@2
   inputs:
     command: test
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
+
+# Running dotnet tests
+- script: dotnet test pipelines-dotnet-core --logger trx
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
