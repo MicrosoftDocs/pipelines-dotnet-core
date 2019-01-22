@@ -11,10 +11,14 @@ variables:
 
 steps:
 - script: |
-    dotnet build --configuration $(buildConfiguration)
+    dotnet build --configuration $(buildConfiguration) # Include additional options such as --configuration to meet your need
     dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
     dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
     dotnet restore
+    # You can run any dotnet command in your pipeline. The following example shows how to install and use a .NET global tool, dotnetsay:
+    # https://www.nuget.org/packages/dotnetsay/
+    dotnet tool install -g dotnetsay
+    dotnetsay
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
