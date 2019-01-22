@@ -44,7 +44,7 @@ steps:
 
 # Use the .NET Core task to run unit tests in your .NET Core solution by using testing frameworks like MSTest, xUnit, and NUnit. 
 # THere is a warning # #[warning]Project file(s) matching the specified pattern were not found. 
-# https://stackoverflow.com/a/53053739/2773461
+# https://stackoverflow.com/a/53053739/2773461 I should check it in depth.
 - task: DotNetCoreCLI@2
   inputs:
     command: test
@@ -55,6 +55,23 @@ steps:
 - script: dotnet test dotnetcore-sample.sln --logger trx
 - task: PublishTestResults@2
   condition: succeededOrFailed()
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
+
+# Collect code coverage
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/languages/dotnet-core?view=vsts&tabs=yaml#collect-code-coverage
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+
+
+# If you choose to run the dotnet test command, 
+# specify the test results logger and coverage options. Then use the Publish Test Results task:
+- script: dotnet test dotnetcore-sample.sln --logger trx --collect "Code coverage"
+- task: PublishTestResults@2
   inputs:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
