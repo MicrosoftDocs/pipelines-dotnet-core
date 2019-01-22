@@ -19,7 +19,9 @@ steps:
     # https://www.nuget.org/packages/dotnetsay/
     dotnet tool install -g dotnetsay
     # dotnetsay
-- script: dotnetsay
+
+- script: |
+    dotnetsay
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
