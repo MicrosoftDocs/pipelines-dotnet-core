@@ -13,6 +13,8 @@ steps:
 - script: |
     dotnet build --configuration $(buildConfiguration) # Include additional options such as --configuration to meet your need
     dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
+    
+    # Publishing the output of the build
     dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
     # You can run any dotnet command in your pipeline. The following example shows how to install and use a .NET global tool, dotnetsay:
     # https://www.nuget.org/packages/dotnetsay/
@@ -75,3 +77,7 @@ steps:
   inputs:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
+
+# Package and deliver the code 
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/languages/dotnet-core?view=vsts&tabs=yaml#package-and-deliver-your-code
+- task: PublishBuildArtifacts@1
