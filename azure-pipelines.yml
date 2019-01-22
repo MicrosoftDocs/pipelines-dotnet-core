@@ -16,9 +16,20 @@ steps:
     dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
     # You can run any dotnet command in your pipeline. The following example shows how to install and use a .NET global tool, dotnetsay:
     # https://www.nuget.org/packages/dotnetsay/
-    dotnet tool install -g dotnetsay
-    dotnet restore
-    dotnetsay
+    # dotnet tool install -g dotnetsay
+    # dotnetsay    
+
+# .NET Core
+# Restore NuGet packages.
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'
+    #verbosityRestore: 'detailed' # Options: quiet, minimal, normal, detailed, diagnostic
+
+- script: dotnet tool install -g dotnetsay
+- script: dotnetsay
+
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
