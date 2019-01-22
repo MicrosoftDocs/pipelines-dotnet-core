@@ -18,6 +18,10 @@ steps:
     # https://www.nuget.org/packages/dotnetsay/
     # dotnet tool install -g dotnetsay
     # dotnetsay
+    # Above in reference with dotnetsay command this is the original way about install it. But there is this bug
+    # https://developercommunity.visualstudio.com/content/problem/340067/install-global-tool.html?childToView=343864#comment-343864
+    # which was soleved with this comment issue https://github.com/dotnet/cli/issues/8368#issuecomment-424852996
+
     dotnet tool install  --tool-path . dotnetsay
     ./dotnetsay
   displayName: 'Command Line Script'    
