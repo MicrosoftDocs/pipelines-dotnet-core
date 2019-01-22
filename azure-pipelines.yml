@@ -18,7 +18,7 @@ steps:
     # You can run any dotnet command in your pipeline. The following example shows how to install and use a .NET global tool, dotnetsay:
     # https://www.nuget.org/packages/dotnetsay/
     dotnet tool install -g dotnetsay
-    dotnetsay
+    # dotnetsay
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
