@@ -88,10 +88,12 @@ steps:
 # To create and publish a NuGet package, add the following snippet:
 - script: dotnet pack /p:PackageVersion=$(version)  # define version variable elsewhere in your pipeline
 
-- task: NuGetCommand@2
-  inputs:
-    command: push
-    nuGetFeedType: external
-    publishFeedCredentials: 'pipelines-dotnet-core'
-    versioningScheme: byEnvVar
-    versionEnvVar: version
+
+# I have to get the creentials
+# - task: NuGetCommand@2
+#  inputs:
+    #command: push
+    #nuGetFeedType: external
+    #publishFeedCredentials: 'pipelines-dotnet-core'
+    #versioningScheme: byEnvVar
+    #versionEnvVar: version
