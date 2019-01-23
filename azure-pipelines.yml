@@ -97,3 +97,11 @@ steps:
     #publishFeedCredentials: 'pipelines-dotnet-core'
     #versioningScheme: byEnvVar
     #versionEnvVar: version
+
+# To create a .zip file archive that's ready for publishing to a web app, add the following snippet:
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
