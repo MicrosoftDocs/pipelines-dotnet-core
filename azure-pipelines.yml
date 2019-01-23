@@ -92,6 +92,6 @@ steps:
   inputs:
     command: push
     nuGetFeedType: external
-    publishFeedCredentials: '<Name of the NuGet service connection>'
+    publishFeedCredentials: 'pipelines-dotnet-core'
     versioningScheme: byEnvVar
     versionEnvVar: version
