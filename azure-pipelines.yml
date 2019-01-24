@@ -13,8 +13,15 @@ variables:
   dockerId: 'possibilItest'
   dockerPassword: '6Rkdm=LJJZawnpwrMvun6TdAmOSAneAj'
 
+- task: DotNetCoreInstaller@0
+  inputs:
+    version: '2.1.300' # replace this value with the version that you need for your project
+
 steps:
 - script: |
+
+    # Restore dependences https://docs.microsoft.com/en-us/azure/devops/pipelines/languages/dotnet-core?view=vsts&tabs=yaml#restore-dependencies
+    dotnet restore
     dotnet build --configuration $(buildConfiguration) # Include additional options such as --configuration to meet your need
     dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
     
@@ -32,21 +39,6 @@ steps:
     ./dotnetsay
   displayName: 'Command Line Script'    
 
-# .NET Core
-# Restore NuGet packages.
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    projects: '**/*.csproj'
-    #verbosityRestore: 'detailed' # Options: quiet, minimal, normal, detailed, diagnostic
-
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  inputs:
-    testRunner: VSTest
-    testResultsFiles: '**/*.trx'
-
-- task: PublishBuildArtifacts@1
 
 # Use the .NET Core task to run unit tests in your .NET Core solution by using testing frameworks like MSTest, xUnit, and NUnit. 
 # THere is a warning # #[warning]Project file(s) matching the specified pattern were not found. 
@@ -65,56 +57,19 @@ steps:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
 
-# Collect code coverage
-# https://docs.microsoft.com/en-us/azure/devops/pipelines/languages/dotnet-core?view=vsts&tabs=yaml#collect-code-coverage
-- task: DotNetCoreCLI@2
-  inputs:
-    command: test
-    projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
-
-# If you choose to run the dotnet test command, 
-# specify the test results logger and coverage options. Then use the Publish Test Results task:
-- script: dotnet test dotnetcore-sample.sln --logger trx --collect "Code coverage"
-- task: PublishTestResults@2
-  inputs:
-    testRunner: VSTest
-    testResultsFiles: '**/*.trx'
-
-# Package and deliver the code 
-# https://docs.microsoft.com/en-us/azure/devops/pipelines/languages/dotnet-core?view=vsts&tabs=yaml#package-and-deliver-your-code
-# This code takes all the files in $(Build.ArtifactStagingDirectory) and upload them as 
-# an artifact of your build. 
-- task: PublishBuildArtifacts@1
-
-# Publish to a NuGet feed
-# To create and publish a NuGet package, add the following snippet:
-- script: dotnet pack /p:PackageVersion=$(version)  # define version variable elsewhere in your pipeline
-
-
-# I have to get the creentials
-# - task: NuGetCommand@2
+# .NET Core
+# Restore NuGet packages.
+#- task: DotNetCoreCLI@2
 #  inputs:
-    #command: push
-    #nuGetFeedType: external
-    #publishFeedCredentials: 'pipelines-dotnet-core'
-    #versioningScheme: byEnvVar
-    #versionEnvVar: version
+#    command: 'restore'
+#    projects: '**/*.csproj'
+    #verbosityRestore: 'detailed' # Options: quiet, minimal, normal, detailed, diagnostic
 
-# To create a .zip file archive that's ready for publishing to a web app, add the following snippet:
-- task: DotNetCoreCLI@2
-  inputs:
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
 
-- task: AzureRmWebAppDeployment@3
-  inputs:
-    azureSubscription: 'Free trial'
-    WebAppName: 'dotnetcore'
-    Package: $(System.ArtifactsDirectory)/**/*.zip
+
+
+
 
 # Build a docker image
 #- script: | 
