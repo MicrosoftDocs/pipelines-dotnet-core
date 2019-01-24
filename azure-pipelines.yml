@@ -10,8 +10,8 @@ variables:
   buildConfiguration: 'Release'
   imageName: 'dotnetcore:$(Build.BuildId)'
   # define two more variables dockerId and dockerPassword in the build pipeline in UI
-  dockerId: 'possibilItest'
-  dockerPassword: '6Rkdm=LJJZawnpwrMvun6TdAmOSAneAj'
+  dockerId: 'dotnetcoretesting'
+  dockerPassword: '/cV0=NHCUvKAY5RSKMMNy0i+Jpm6NaRn'
 
 
 steps:
@@ -39,7 +39,7 @@ steps:
 
 - task: DotNetCoreInstaller@0
   inputs:
-    version: '2.2' # replace this value with the version that you need for your project
+    version: '2.2.1' # replace this value with the version that you need for your project
 
 # Use the .NET Core task to run unit tests in your .NET Core solution by using testing frameworks like MSTest, xUnit, and NUnit. 
 # THere is a warning # #[warning]Project file(s) matching the specified pattern were not found. 
