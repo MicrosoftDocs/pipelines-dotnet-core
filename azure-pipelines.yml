@@ -59,6 +59,15 @@ steps:
     testResultsFiles: '**/*.trx'
 
 
+# Collect code coverage
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/languages/dotnet-core?view=vsts&tabs=yaml#collect-code-coverage
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+
+
 # .NET Core
 # Restore NuGet packages.
 #- task: DotNetCoreCLI@2
