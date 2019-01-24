@@ -8,6 +8,10 @@ pool:
   
 variables:
   buildConfiguration: 'Release'
+  imageName: 'dotnetcore:$(Build.BuildId)'
+  # define two more variables dockerId and dockerPassword in the build pipeline in UI
+  dockerId: 'possibilITest'
+  dockerPassword: '6Rkdm=LJJZawnpwrMvun6TdAmOSAneAj'
 
 steps:
 - script: |
@@ -105,3 +109,10 @@ steps:
     publishWebProjects: True
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
+
+# Build a docker image
+- script: | 
+    docker build -t $(dockerId)/$(imageName) .  # add options to this command to meet your needs 
+    docker build -f Dockerfile -t $(dockerId).azurecr.io/$(imageName) .
+    docker login -u $(dockerId) -p $pswd $(dockerid).azurecr.io
+    docker push $(dockerId).azurecr.io/$(imageName)

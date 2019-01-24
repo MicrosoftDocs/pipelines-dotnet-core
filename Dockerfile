@@ -12,3 +12,4 @@ WORKDIR /app
 COPY dotnetcore-sample/out .
 
 ENTRYPOINT ["dotnet", "dotnetcore-sample.dll"]
+
