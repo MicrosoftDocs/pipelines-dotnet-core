@@ -13,9 +13,6 @@ variables:
   dockerId: 'possibilItest'
   dockerPassword: '6Rkdm=LJJZawnpwrMvun6TdAmOSAneAj'
 
-- task: DotNetCoreInstaller@0
-  inputs:
-    version: '2.1.300' # replace this value with the version that you need for your project
 
 steps:
 - script: |
@@ -39,6 +36,10 @@ steps:
     ./dotnetsay
   displayName: 'Command Line Script'    
 
+
+- task: DotNetCoreInstaller@0
+  inputs:
+    version: '2.1.300' # replace this value with the version that you need for your project
 
 # Use the .NET Core task to run unit tests in your .NET Core solution by using testing frameworks like MSTest, xUnit, and NUnit. 
 # THere is a warning # #[warning]Project file(s) matching the specified pattern were not found. 
