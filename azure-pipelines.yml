@@ -51,12 +51,12 @@ steps:
     arguments: '--configuration $(buildConfiguration)'
 
 # Running dotnet tests
-#- script: dotnet test dotnetcore-sample.sln --logger trx
-#- task: PublishTestResults@2
-#  condition: succeededOrFailed()
-#  inputs:
-#    testRunner: VSTest
-#    testResultsFiles: '**/*.trx'
+#- script: dotnet test dotnetcore-sample.sln --logger trx ya esta arriba
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
 
 
 # .NET Core
