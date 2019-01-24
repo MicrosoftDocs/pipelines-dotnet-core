@@ -39,7 +39,7 @@ steps:
 
 - task: DotNetCoreInstaller@0
   inputs:
-    version: '2.1.300' # replace this value with the version that you need for your project
+    version: '2.2' # replace this value with the version that you need for your project
 
 # Use the .NET Core task to run unit tests in your .NET Core solution by using testing frameworks like MSTest, xUnit, and NUnit. 
 # THere is a warning # #[warning]Project file(s) matching the specified pattern were not found. 
@@ -51,12 +51,12 @@ steps:
     arguments: '--configuration $(buildConfiguration)'
 
 # Running dotnet tests
-- script: dotnet test dotnetcore-sample.sln --logger trx
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  inputs:
-    testRunner: VSTest
-    testResultsFiles: '**/*.trx'
+#- script: dotnet test dotnetcore-sample.sln --logger trx
+#- task: PublishTestResults@2
+#  condition: succeededOrFailed()
+#  inputs:
+#    testRunner: VSTest
+#    testResultsFiles: '**/*.trx'
 
 
 # .NET Core
