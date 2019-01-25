@@ -98,6 +98,10 @@ steps:
 # Build a docker image
 - script: | 
     docker build -t $(dockerId)/$(imageName) .  # add options to this command to meet your needs 
+    docker build -t $(dockerId).azurecr.io/$(imageName) .
+    docker login -u $(dockerId) -p $(pswd) $(dockerId).azurecr.io
+    docker push $(dockerId).azurecr.io/$(imageName)
+
 #    docker build -f Dockerfile -t $(dockerId).azurecr.io/$(imageName) .
 #    docker login -u $(dockerId) -p $pswd $(dockerid).azurecr.io
 #    docker push $(dockerId).azurecr.io/$(imageName)
