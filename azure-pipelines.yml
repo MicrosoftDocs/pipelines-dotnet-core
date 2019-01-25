@@ -2,21 +2,106 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core?view=vsts
 
 pool:
-  vmImage: 'Ubuntu 16.04'
+  vmImage: 'ubuntu-16.04' # other options: 'macOS-10.13', 'vs2017-win2016'
+
+
   
 variables:
   buildConfiguration: 'Release'
+  imageName: 'dotnetcore:$(Build.BuildId)'
+  # define two more variables dockerId and dockerPassword in the build pipeline in UI
+  dockerId: 'dotnetcoretesting'
+  dockerPassword: '/cV0=NHCUvKAY5RSKMMNy0i+Jpm6NaRn'
+
 
 steps:
 - script: |
-    dotnet build --configuration $(buildConfiguration)
-    dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
-    dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
 
+    # Restore dependences https://docs.microsoft.com/en-us/azure/devops/pipelines/languages/dotnet-core?view=vsts&tabs=yaml#restore-dependencies
+    dotnet restore
+    dotnet build --configuration $(buildConfiguration) # Include additional options such as --configuration to meet your need
+    dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
+    
+    # Publishing the output of the build
+    dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
+    # You can run any dotnet command in your pipeline. The following example shows how to install and use a .NET global tool, dotnetsay:
+    # https://www.nuget.org/packages/dotnetsay/
+    # dotnet tool install -g dotnetsay
+    # dotnetsay
+    # Above in reference with dotnetsay command this is the original way about install it. But there is this bug
+    # https://developercommunity.visualstudio.com/content/problem/340067/install-global-tool.html?childToView=343864#comment-343864
+    # which was soleved with this comment issue https://github.com/dotnet/cli/issues/8368#issuecomment-424852996
+
+    dotnet tool install  --tool-path . dotnetsay
+    ./dotnetsay
+  displayName: 'Command Line Script'    
+
+
+- task: DotNetCoreInstaller@0
+  inputs:
+    version: '2.2.103' # replace this value with the version that you need for your project
+
+# Use the .NET Core task to run unit tests in your .NET Core solution by using testing frameworks like MSTest, xUnit, and NUnit. 
+# THere is a warning # #[warning]Project file(s) matching the specified pattern were not found. 
+# https://stackoverflow.com/a/53053739/2773461 I should check it in depth.
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+# Running dotnet tests
+#- script: dotnet test dotnetcore-sample.sln --logger trx ya esta arriba
 - task: PublishTestResults@2
   condition: succeededOrFailed()
   inputs:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
 
+
+# Collect code coverage
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/languages/dotnet-core?view=vsts&tabs=yaml#collect-code-coverage
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+
+- script: dotnet test dotnetcore-tests --logger trx --collect "Code coverage"
+- task: PublishTestResults@2
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
+
 - task: PublishBuildArtifacts@1
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
+
+# .NET Core
+# Restore NuGet packages.
+#- task: DotNetCoreCLI@2
+#  inputs:
+#    command: 'restore'
+#    projects: '**/*.csproj'
+    #verbosityRestore: 'detailed' # Options: quiet, minimal, normal, detailed, diagnostic
+
+
+
+
+
+
+# Build a docker image
+- script: | 
+    docker build -t $(dockerId)/$(imageName) .  # add options to this command to meet your needs 
+    docker build -t $(dockerId).azurecr.io/$(imageName) .
+    docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
+    docker push $(dockerId).azurecr.io/$(imageName)
+
+#    docker build -f Dockerfile -t $(dockerId).azurecr.io/$(imageName) .
+#    docker login -u $(dockerId) -p $pswd $(dockerid).azurecr.io
+#    docker push $(dockerId).azurecr.io/$(imageName)
