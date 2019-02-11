@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/ryanlister/l16test/_apis/build/status/ligglel16.pipelines-dotnet-core?branchName=master)](https://dev.azure.com/ryanlister/l16test/_build/latest?definitionId=1&branchName=master)
+
 # Sample ASP.NET Core application for Azure Pipelines docs
 
 For information on how to use this repository, see [.NET Core](https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core).
