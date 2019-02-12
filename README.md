@@ -1,3 +1,4 @@
+[![Build Status](https://ashutosh1.visualstudio.com/AzureDevOpsServices/_apis/build/status/AzureDevOpsServices-CI?branchName=master)](https://ashutosh1.visualstudio.com/AzureDevOpsServices/_build/latest?definitionId=5&branchName=master)
 # Sample ASP.NET Core application for Azure Pipelines docs
 
 For information on how to use this repository, see [.NET Core](https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core).
