@@ -1,6 +1,6 @@
 using System;
 
-namespace dotnetcore_sample.Models
+namespace pipelines_dotnet_core.Models
 {
     public class ErrorViewModel
     {

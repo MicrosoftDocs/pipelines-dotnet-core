@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace dotnetcore_sample
+namespace pipelines_dotnet_core
 {
     public class Program
     {

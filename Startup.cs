@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace dotnetcore_sample
+namespace pipelines_dotnet_core
 {
     public class Startup
     {

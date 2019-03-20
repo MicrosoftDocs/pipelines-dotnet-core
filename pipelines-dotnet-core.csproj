@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <RootNamespace>dotnetcore_sample</RootNamespace>
+    <RootNamespace>pipelines_dotnet_core</RootNamespace>
   </PropertyGroup>
 
 
