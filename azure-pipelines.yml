@@ -19,3 +19,9 @@ steps:
     command: build
     projects: '**/*.csproj'
     arguments: '--configuration Release'
+    
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
