@@ -1,15 +1,7 @@
 # Sample ASP.NET Core application for Azure Pipelines docs
 
-For information on how to use this repository, see docs for [.NET Core](https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core).
-
-| Example | Build status |
-|---------|--------------|
-| Build | [![Build status](https://dev.azure.com/pipelines-docs/docs/_apis/build/status/dotnetcore/dotnetcore)](https://dev.azure.com/pipelines-docs/docs/_build/latest?definitionId=1) |
-| Build (YAML) | [![Build status](https://dev.azure.com/pipelines-docs/docs/_apis/build/status/dotnetcore/dotnetcore-yaml)](https://dev.azure.com/pipelines-docs/docs/_build/latest?definitionId=2) |
-| Build image and push to Docker Hub | [![Build status](https://dev.azure.com/pipelines-docs/docs/_apis/build/status/dotnetcore/dotnetcore-dockerhub)](https://dev.azure.com/pipelines-docs/docs/_build/latest?definitionId=3) |
-| Build image and push to Docker Hub (YAML) | [![Build status](https://dev.azure.com/pipelines-docs/docs/_apis/build/status/dotnetcore/dotnetcore-dockerhub-yaml)](https://dev.azure.com/pipelines-docs/docs/_build/latest?definitionId=4) |
-| Build image and push to Azure Container Registry | [![Build status](https://dev.azure.com/pipelines-docs/docs/_apis/build/status/dotnetcore/dotnetcore-acr)](https://dev.azure.com/pipelines-docs/docs/_build/latest?definitionId=5) |
-| Build image and push to Azure Container Registry (YAML) | [![Build status](https://dev.azure.com/pipelines-docs/docs/_apis/build/status/dotnetcore/dotnetcore-acr-yaml)](https://dev.azure.com/pipelines-docs/docs/_build/latest?definitionId=6) |
+For information on how to set up a pipeline for this repository, see [Create your first pipeline](https://docs.microsoft.com/azure/devops/pipelines/get-started-yaml?view=azure-devops).
+For more information on building .NET Core applications, see [.NET Core](https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core?view=azure-devops).
 
 # Contributing
 
