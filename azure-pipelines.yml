@@ -11,7 +11,7 @@ variables:
   imageName: 'dotnetcore:$(Build.BuildId)'
   # define two more variables dockerId and dockerPassword in the build pipeline in UI
   dockerId: 'dotnetcoretesting'
-  dockerPassword: '/cV0=NHCUvKAY5RSKMMNy0i+Jpm6NaRn'
+  dockerPassword: 'my-password'
 
 
 steps:

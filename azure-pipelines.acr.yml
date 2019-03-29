@@ -7,8 +7,8 @@ variables:
   buildConfiguration: 'Release'
   imageName: 'dotnetcore:$(Build.BuildId)'
   # define two more variables dockerId and dockerPassword in the build pipeline in UI
-  dockerId: 'possibilITest'
-  dockerPassword: '6Rkdm=LJJZawnpwrMvun6TdAmOSAneAj'
+  dockerId: 'testing'
+  dockerPassword: 'my-password'
   
 steps:
 - script: |
