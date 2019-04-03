@@ -16,7 +16,7 @@ steps:
 - script: dotnet restore
 - script:  dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
-- task: runTest
+- task: DotNetCoreCLI@2
   inputs:
     command: test
     projects: '**/tests/Tests.Core/Tests.Core.csproj'
