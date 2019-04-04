@@ -1,3 +1,5 @@
+trigger:
+- develop
 
 pr:
   branches:
