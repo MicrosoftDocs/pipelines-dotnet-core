@@ -1,10 +1,11 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-trigger:
-- master
+pr:
+  branches:
+    include:
+    - develop
+  paths:
+     exclude:
+     - TestNotBuildApp/*
 
 pool:
   vmImage: 'vs2017-win2016'
@@ -13,11 +14,11 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet restore
-- script:  dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: test
-    projects: '**/tests/Tests.Core/Tests.Core.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+  - script: dotnet restore
+  - script:  dotnet build --configuration $(buildConfiguration)
+    displayName: 'dotnet build $(buildConfiguration)'
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: test
+      projects: '**/tests/Tests.Core/Tests.Core.csproj'
+      arguments: '--configuration $(buildConfiguration)'
