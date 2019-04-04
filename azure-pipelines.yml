@@ -14,11 +14,18 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-  - script: dotnet restore
-  - script:  dotnet build --configuration $(buildConfiguration)
-    displayName: 'dotnet build $(buildConfiguration)'
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: test
-      projects: '**/tests/Tests.Core/Tests.Core.csproj'
-      arguments: '--configuration $(buildConfiguration)'
+- script: dotnet restore
+- script:  dotnet build --configuration $(buildConfiguration)
+  displayName: 'dotnet build $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: build
+    projects: '**/pipelines-dotnet-core.csproj'
+    arguments: '--configuration Release' # Update this to match your need
+- task: DotNetCoreCLI@2
+  displayName: Tests
+  inputs:
+    command: test
+    projects: '**/tests/Tests.Core/Tests.Core.csproj' 
+    arguments: '--configuration $(buildConfiguration) --filter TestCategory="Api"'
