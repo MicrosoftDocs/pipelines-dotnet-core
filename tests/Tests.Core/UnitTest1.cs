@@ -13,7 +13,7 @@ namespace Tests
         [Category("Api")]
         public void Test1()
         {
-            Assert.Pass();
+            Assert.Pass();  
         }
 
         [Test]
