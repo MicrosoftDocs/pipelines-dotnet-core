@@ -43,7 +43,7 @@ steps:
   - task: replacetokens@3
     inputs:
       rootDirectory: '**/.nuget/'
-      targetFiles: '**/NuGet.config'
+      targetFiles: '**/.nuget/NuGet.config'
       encoding: 'auto'
       writeBOM: true
       actionOnMissing: 'warn'
