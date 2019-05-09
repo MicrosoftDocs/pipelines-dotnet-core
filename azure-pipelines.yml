@@ -7,14 +7,6 @@ pr:
      exclude:
      - TestNotBuildApp/*
 
-pr:
-  branches:
-    include:
-    - develop
-  paths:
-     exclude:
-     - TestNotBuildApp/*
-
 pool:
   vmImage: 'vs2017-win2016'
 
