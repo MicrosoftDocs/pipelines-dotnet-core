@@ -40,7 +40,7 @@ steps:
   - task: FileTransform@1
     displayName: 'File Transform: '
     inputs:
-      folderPath: '**/.nuget/NuGet.pipelines.config'
+      folderPath: '**/*.config'
       enableXmlTransform: true
       xmlTransformationRules: |
         -transform NuGet.pipelines.Config -xml NuGet.Config
