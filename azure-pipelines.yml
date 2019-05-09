@@ -33,15 +33,12 @@ steps:
 #      Write-Host "This works: $env:MY_MAPPED_ENV_VAR"    # Recommended
 #    env:
 #      MY_MAPPED_ENV_VAR: $(secretKey)
-  - task: DeleteFiles@1
-    inputs:
-      sourceFolder: '**/.nuget/'
-      contents: 'NuGet.Config' 
   - task: PowerShell@2
     displayName: 'Start local DB and rename config files'
     inputs:
       targetType: 'inline'
       script: |        
+        Remove-Item .nuget/NuGet.Config
         Rename-Item .nuget/NuGet.pipelines.Config NuGet.Config
   - task: replacetokens@3
     inputs:
