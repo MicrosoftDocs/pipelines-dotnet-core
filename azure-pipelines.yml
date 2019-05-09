@@ -42,17 +42,17 @@ steps:
     inputs:
       targetType: 'inline'
       script: |        
-        Rename-Item **/.nuget/NuGet.pipelines.Config NuGet.Config
+        Rename-Item .nuget/NuGet.pipelines.Config NuGet.Config
   - task: replacetokens@3
-      inputs:
-        rootDirectory: '**/.nuget/'
-        targetFiles: '**/NuGet.config'
-        encoding: 'auto'
-        writeBOM: true
-        actionOnMissing: 'warn'
-        keepToken: false
-        tokenPrefix: '#{'
-        tokenSuffix: '}#'
+    inputs:
+      rootDirectory: '**/.nuget/'
+      targetFiles: '**/NuGet.config'
+      encoding: 'auto'
+      writeBOM: true
+      actionOnMissing: 'warn'
+      keepToken: false
+      tokenPrefix: '#{'
+      tokenSuffix: '}#'
     
 #  - task: FileTransform@1
 #    displayName: 'File Transform: '
