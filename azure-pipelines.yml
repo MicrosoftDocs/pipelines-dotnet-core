@@ -42,6 +42,6 @@ steps:
         -transform NuGet.pipelines.Config -xml NuGet.Config
       fileType: xml # Options: xml, json
       targetFiles: 'NuGet.Config, parameters.xml'
-      
-      
+            
+            
       
