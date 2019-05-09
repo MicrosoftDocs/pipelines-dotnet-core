@@ -31,3 +31,12 @@ steps:
     command: test
     projects: '**/tests/Tests.Core/Tests.Core.csproj' 
     arguments: '--configuration $(buildConfiguration) --filter TestCategory="Api"'
+- task: FileTransform@1
+  displayName: 'File Transform: '
+  inputs:
+    folderPath: '**/pipelines-dotnet-core.csproj/.nuget/'
+    enableXmlTransform: true
+    xmlTransformationRules: |
+      -transform NuGet.pipelines.Config -xml NuGet.Config
+    fileType: xml # Options: xml, json
+    targetFiles: 'NuGet.Config, parameters.xml'
