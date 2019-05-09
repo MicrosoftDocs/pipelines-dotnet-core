@@ -42,8 +42,8 @@ steps:
         Rename-Item .nuget/NuGet.pipelines.Config NuGet.Config
   - task: replacetokens@3
     inputs:
-      rootDirectory: '**/.nuget/'
-      targetFiles: '**/.nuget/NuGet.config'
+      rootDirectory: '$(System.DefaultWorkingDirectory)/.nuget/'
+      targetFiles: '$(System.DefaultWorkingDirectory)/.nuget/NuGet.config'
       encoding: 'auto'
       writeBOM: true
       actionOnMissing: 'warn'
