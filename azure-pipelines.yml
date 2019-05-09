@@ -34,7 +34,7 @@ steps:
 #    env:
 #      MY_MAPPED_ENV_VAR: $(secretKey)
   - task: PowerShell@2
-    displayName: 'Start local DB and rename config files'
+    displayName: 'rename nuget.config files'
     inputs:
       targetType: 'inline'
       script: |        
@@ -49,7 +49,13 @@ steps:
       actionOnMissing: 'warn'
       keepToken: false
       tokenPrefix: '#{'
-      tokenSuffix: '}#'
+      tokenSuffix: '}#'  
+  - task: PowerShell@2
+    displayName: 'check replace'
+    inputs:
+      targetType: 'inline'
+      script: |        
+        Get-Content -Path .nuget/NuGet.Config | Where-Object {$_ -like '*multitracks*'
     
 #  - task: FileTransform@1
 #    displayName: 'File Transform: '
