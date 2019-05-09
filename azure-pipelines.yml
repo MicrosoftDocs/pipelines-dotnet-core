@@ -36,7 +36,7 @@ steps:
   - task: FileTransform@1
     displayName: 'File Transform: '
     inputs:
-      folderPath: '**/pipelines-dotnet-core.csproj/.nuget/'
+      folderPath: '**/.nuget/'
       enableXmlTransform: true
       xmlTransformationRules: |
         -transform NuGet.pipelines.Config -xml NuGet.Config
