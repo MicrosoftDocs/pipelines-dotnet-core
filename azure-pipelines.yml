@@ -33,12 +33,15 @@ steps:
       Write-Host "This works: $env:MY_MAPPED_ENV_VAR"    # Recommended
     env:
       MY_MAPPED_ENV_VAR: $(secretKey)
-- task: FileTransform@1
-  displayName: 'File Transform: '
-  inputs:
-    folderPath: '**/pipelines-dotnet-core.csproj/.nuget/'
-    enableXmlTransform: true
-    xmlTransformationRules: |
-      -transform NuGet.pipelines.Config -xml NuGet.Config
-    fileType: xml # Options: xml, json
-    targetFiles: 'NuGet.Config, parameters.xml'
+  - task: FileTransform@1
+    displayName: 'File Transform: '
+    inputs:
+      folderPath: '**/pipelines-dotnet-core.csproj/.nuget/'
+      enableXmlTransform: true
+      xmlTransformationRules: |
+        -transform NuGet.pipelines.Config -xml NuGet.Config
+      fileType: xml # Options: xml, json
+      targetFiles: 'NuGet.Config, parameters.xml'
+      
+      
+      
