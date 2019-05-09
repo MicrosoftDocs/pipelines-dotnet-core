@@ -14,25 +14,25 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-  - script: dotnet restore
-  - script:  dotnet build --configuration $(buildConfiguration)
-    displayName: 'dotnet build $(buildConfiguration)'
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: test
-      projects: '**/tests/Tests.Core/Tests.Core.csproj'
-      arguments: '--configuration $(buildConfiguration)'
-  - powershell: |
+#  - script: dotnet restore
+#  - script:  dotnet build --configuration $(buildConfiguration)
+#    displayName: 'dotnet build $(buildConfiguration)'
+#  - task: DotNetCoreCLI@2
+#    inputs:
+#      command: test
+#      projects: '**/tests/Tests.Core/Tests.Core.csproj'
+#      arguments: '--configuration $(buildConfiguration)'
+#  - powershell: |
       # Using an input-macro:
-      Write-Host "This works: $(secretKey)"
-
+#      Write-Host "This works: $(secretKey)"
+#
       # Using the env var directly:
-      Write-Host "This does not work: $env:SECRETKEY"
+#      Write-Host "This does not work: $env:SECRETKEY"
 
       # Using the mapped env var:
-      Write-Host "This works: $env:MY_MAPPED_ENV_VAR"    # Recommended
-    env:
-      MY_MAPPED_ENV_VAR: $(secretKey)
+#      Write-Host "This works: $env:MY_MAPPED_ENV_VAR"    # Recommended
+#    env:
+#      MY_MAPPED_ENV_VAR: $(secretKey)
   - task: FileTransform@1
     displayName: 'File Transform: '
     inputs:
