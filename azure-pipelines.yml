@@ -37,15 +37,32 @@ steps:
     inputs:
       sourceFolder: '**/.nuget/'
       contents: 'NuGet.Config' 
-  - task: FileTransform@1
-    displayName: 'File Transform: '
+  - task: PowerShell@2
+    displayName: 'Start local DB and rename config files'
     inputs:
-      folderPath: '**/*.config'
-      enableXmlTransform: true
-      xmlTransformationRules: |
-        -transform NuGet.pipelines.Config -xml NuGet.Config
-      fileType: xml # Options: xml, json
-      targetFiles: 'NuGet.Config, parameters.xml'
+      targetType: 'inline'
+      script: |        
+        Rename-Item **/.nuget/NuGet.pipelines.Config NuGet.Config
+  - task: replacetokens@3
+      inputs:
+        rootDirectory: '**/.nuget/'
+        targetFiles: '**/NuGet.config'
+        encoding: 'auto'
+        writeBOM: true
+        actionOnMissing: 'warn'
+        keepToken: false
+        tokenPrefix: '#{'
+        tokenSuffix: '}#'
+    
+#  - task: FileTransform@1
+#    displayName: 'File Transform: '
+#    inputs:
+#      folderPath: '**/*.config'
+#      enableXmlTransform: true
+#      xmlTransformationRules: |
+#        -transform NuGet.pipelines.Config -xml NuGet.Config
+#      fileType: xml # Options: xml, json
+#      targetFiles: 'NuGet.Config, parameters.xml'
             
             
       
