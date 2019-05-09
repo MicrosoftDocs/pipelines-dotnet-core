@@ -55,7 +55,7 @@ steps:
     inputs:
       targetType: 'inline'
       script: |        
-        Get-Content -Path .nuget/NuGet.Config | Where-Object {$_ -like '*multitracks*'
+        Get-Content -Path .nuget/NuGet.Config | Where-Object {$_ -like '*multitracks*'}
     
 #  - task: FileTransform@1
 #    displayName: 'File Transform: '
