@@ -33,6 +33,10 @@ steps:
 #      Write-Host "This works: $env:MY_MAPPED_ENV_VAR"    # Recommended
 #    env:
 #      MY_MAPPED_ENV_VAR: $(secretKey)
+  - task: DeleteFiles@1
+    inputs:
+      sourceFolder: '**/.nuget/'
+      contents: 'NuGet.Config' 
   - task: FileTransform@1
     displayName: 'File Transform: '
     inputs:
