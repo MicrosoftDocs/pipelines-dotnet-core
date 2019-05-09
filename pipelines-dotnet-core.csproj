@@ -6,6 +6,17 @@
     <RootNamespace>pipelines_dotnet_core</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="TestNotBuildApp\**" />
+    <Compile Remove="tests\**" />
+    <Content Remove="TestNotBuildApp\**" />
+    <Content Remove="tests\**" />
+    <EmbeddedResource Remove="TestNotBuildApp\**" />
+    <EmbeddedResource Remove="tests\**" />
+    <None Remove="TestNotBuildApp\**" />
+    <None Remove="tests\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />

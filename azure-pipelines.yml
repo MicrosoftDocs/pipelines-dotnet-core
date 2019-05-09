@@ -1,0 +1,71 @@
+
+pr:
+  branches:
+    include:
+    - develop
+  paths:
+     exclude:
+     - TestNotBuildApp/*
+
+pool:
+  vmImage: 'vs2017-win2016'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+#  - script: dotnet restore
+#  - script:  dotnet build --configuration $(buildConfiguration)
+#    displayName: 'dotnet build $(buildConfiguration)'
+#  - task: DotNetCoreCLI@2
+#    inputs:
+#      command: test
+#      projects: '**/tests/Tests.Core/Tests.Core.csproj'
+#      arguments: '--configuration $(buildConfiguration)'
+#  - powershell: |
+      # Using an input-macro:
+#      Write-Host "This works: $(secretKey)"
+#
+      # Using the env var directly:
+#      Write-Host "This does not work: $env:SECRETKEY"
+
+      # Using the mapped env var:
+#      Write-Host "This works: $env:MY_MAPPED_ENV_VAR"    # Recommended
+#    env:
+#      MY_MAPPED_ENV_VAR: $(secretKey)
+  - task: PowerShell@2
+    displayName: 'rename nuget.config files'
+    inputs:
+      targetType: 'inline'
+      script: |        
+        Remove-Item .nuget/NuGet.Config
+        Rename-Item .nuget/NuGet.pipelines.Config NuGet.Config
+  - task: replacetokens@3
+    inputs:
+      rootDirectory: '$(System.DefaultWorkingDirectory)/.nuget/'
+      targetFiles: '$(System.DefaultWorkingDirectory)/.nuget/NuGet.config'
+      encoding: 'auto'
+      writeBOM: true
+      actionOnMissing: 'warn'
+      keepToken: false
+      tokenPrefix: '#{'
+      tokenSuffix: '}#'  
+  - task: PowerShell@2
+    displayName: 'check replace'
+    inputs:
+      targetType: 'inline'
+      script: |        
+        Get-Content -Path .nuget/NuGet.Config | Where-Object {$_ -like '*multitracks*'}
+    
+#  - task: FileTransform@1
+#    displayName: 'File Transform: '
+#    inputs:
+#      folderPath: '**/*.config'
+#      enableXmlTransform: true
+#      xmlTransformationRules: |
+#        -transform NuGet.pipelines.Config -xml NuGet.Config
+#      fileType: xml # Options: xml, json
+#      targetFiles: 'NuGet.Config, parameters.xml'
+            
+            
+      
