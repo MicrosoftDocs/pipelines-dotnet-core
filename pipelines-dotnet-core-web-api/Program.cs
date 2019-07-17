@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace pipelines_dotnet_core
+namespace pipelines_dotnet_core_web_api
 {
     public class Program
     {
