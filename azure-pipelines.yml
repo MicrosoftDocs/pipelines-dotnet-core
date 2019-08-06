@@ -5,18 +5,40 @@
 
 trigger:
 - feature-stage
-# testing the trigger for our feature branch
 
 pool:
   vmImage: 'Ubuntu-16.04'
 
+variables:
+  buildConfiguration: Release
+
 steps:
-- task: PowerShell@2
+- task: DotNetCoreCLI@2
+  displayName: 'Restore dependencies'
   inputs:
-    targetType: inline
-    script: 'Write-Host "Hello Sebi"! We are just playing with the Pipeline now.'
-- task: PowerShell@2
+    command: restore
+    projects: '**/*.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'Build Code for WebApp'
   inputs:
-    targetType: inline
-    script: 'Get-ChildItem | Sort-Object -Property LastWriteTime | Select-Object -Last 5'
-    
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  displayName: 'Testing the code - Unit Tests'
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  displayName: 'Publish code for Web App'
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: true
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish build artifacts for the WebApp deployment'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'code-drop_v1'
