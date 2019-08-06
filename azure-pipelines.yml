@@ -10,7 +10,7 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
-- stage: building-stage
+- stage: building_stage
   displayName: Building Stage for Web App
   jobs:
   - job:
