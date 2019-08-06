@@ -6,9 +6,6 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-16.04'
-
 variables:
   buildConfiguration: 'Release'
 
@@ -17,6 +14,8 @@ stages:
   displayName: Building Stage for Web App
   jobs:
   - job:
+    pool:
+      vmImage: 'Ubuntu-16.04'
     displayName: Restore NuGet Packages
     steps:
     - task: DotNetCoreCLI@2
@@ -25,6 +24,8 @@ stages:
         projects: '**/*.csproj'
   - job:
     displayName: Build Code
+    pool:
+      vmImage: 'Ubuntu-16.04'
     steps:
     - task: DotNetCoreCLI@2
       inputs:
@@ -33,6 +34,8 @@ stages:
         arguments: '--configuration $(buildConfiguration)'
   - job:
     displayName: Test Code
+    pool:
+      vmImage: 'Ubuntu-16.04'
     steps:
     - task: DotNetCoreCLI@2
       inputs:
@@ -40,7 +43,9 @@ stages:
         projects: '**/*Tests/*.csproj'
         arguments: '--configuration $(buildConfiguration)'
   - job:
-    displayName: Publish Code
+    displayName: 'Publish Code'
+    pool:
+      vmImage: 'Ubuntu-16.04'
     steps:
     - task: DotNetCoreCLI@2
       inputs:
@@ -50,6 +55,8 @@ stages:
         zipAfterPublish: true
   - job:
     displayName: Publish build artifact
+    pool:
+      vmImage: 'Ubuntu-16.04'
     steps:
     - task: PublishBuildArtifacts@1
       inputs:
