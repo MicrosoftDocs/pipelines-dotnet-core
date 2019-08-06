@@ -7,59 +7,10 @@ trigger:
 - feature-stage
 # testing the trigger for our feature branch
 
-variables:
-  buildConfiguration: 'Release'
+pool:
+  vmImage: 'Ubuntu-16.04'
 
-stages:
-- stage: building_stage
-  displayName: Building Stage for Web App
-  jobs:
-  - job:
-    pool:
-      vmImage: 'Ubuntu-16.04'
-    displayName: Restore NuGet Packages
-    steps:
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: restore
-        projects: '**/*.csproj'
-  - job:
-    displayName: Build Code
-    pool:
-      vmImage: 'Ubuntu-16.04'
-    steps:
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: build
-        projects: '**/*.csproj'
-        arguments: '--configuration $(buildConfiguration)'
-  - job:
-    displayName: Test Code
-    pool:
-      vmImage: 'Ubuntu-16.04'
-    steps:
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: test
-        projects: '**/*Tests/*.csproj'
-        arguments: '--configuration $(buildConfiguration)'
-  - job:
-    displayName: 'Publish Code'
-    pool:
-      vmImage: 'Ubuntu-16.04'
-    steps:
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: publish
-        publishWebProjects: true
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-        zipAfterPublish: true
-  - job:
-    displayName: Publish build artifact
-    pool:
-      vmImage: 'Ubuntu-16.04'
-    steps:
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: code-drop
+steps:
+- task: PowerShell@2
+  inputs:
+    script: 'Write-Host "Hello Sebi"! We are just playing with the Pipeline now.'
