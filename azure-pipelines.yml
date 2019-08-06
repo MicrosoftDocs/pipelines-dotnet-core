@@ -6,39 +6,66 @@
 trigger:
 - feature-stage
 
-pool:
-  vmImage: 'Ubuntu-16.04'
-
 variables:
   buildConfiguration: Release
 
-steps:
-- task: DotNetCoreCLI@2
-  displayName: 'Restore dependencies'
-  inputs:
-    command: restore
-    projects: '**/*.csproj'
-- task: DotNetCoreCLI@2
-  displayName: 'Build Code for WebApp'
-  inputs:
-    command: build
-    projects: '**/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
-- task: DotNetCoreCLI@2
-  displayName: 'Testing the code - Unit Tests'
-  inputs:
-    command: test
-    projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
-- task: DotNetCoreCLI@2
-  displayName: 'Publish code for Web App'
-  inputs:
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: true
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish build artifacts for the WebApp deployment'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'code-drop_v1'
+stages:
+# RESTORE, BUILD, TEST, PUBLISH THE WEB APP & PUBLISH THE BUILD ARTIFACT 
+- stage: build_code
+  displayName: 'Build and Test the WebApp'
+  jobs:
+  - job: build_webapp
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore dependencies'
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
+    - task: DotNetCoreCLI@2
+      displayName: 'Build Code for WebApp'
+      inputs:
+        command: build
+        projects: '**/*.csproj'
+        arguments: '--configuration $(buildConfiguration)'
+    - task: DotNetCoreCLI@2
+      displayName: 'Testing the code - Unit Tests'
+      inputs:
+        command: test
+        projects: '**/*Tests/*.csproj'
+        arguments: '--configuration $(buildConfiguration)'
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish code for Web App'
+      inputs:
+        command: publish
+        publishWebProjects: True
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        zipAfterPublish: true
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish build artifacts for the WebApp deployment'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'code-drop_v1'
+# CREATE THE INTEGRATION INFRASTRUCTURE STAGE
+- stage: create_integration
+  displayName: 'Create the INT environment infrastructure'
+  dependsOn: build_code
+  jobs:
+  - job: create_infrastructure
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - script: echo 'Build INT environment - logical schema for now'
+      displayName: 'First step in building the INT infra'
+# DEPLOY THE WEB APP TO INTEGRATION STAGE      
+- stage: deploy_to_int
+  displayName: 'Deploy the WebApp to INT environment'
+  dependsOn: create_integration
+  jobs:
+  - job: deploy_artifacts_to_int
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - script: echo 'Deploy WebApp to INTEGRATION.'
+      displayName: 'This is the step where the Web App is actually deployed in the INT env.'
