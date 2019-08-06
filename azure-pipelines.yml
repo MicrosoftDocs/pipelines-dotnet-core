@@ -4,7 +4,8 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+- feature-stage
+# testing the trigger for our feature branch
 
 variables:
   buildConfiguration: 'Release'
