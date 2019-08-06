@@ -1,3 +1,4 @@
+---
 # ASP.NET Core
 # Build and test ASP.NET Core projects targeting .NET Core.
 # Add steps that run tests, create a NuGet package, deploy, and more:
@@ -52,7 +53,7 @@ stages:
   displayName: 'Create the INT environment infrastructure'
   dependsOn: build_code
   jobs:
-  - job: create_infrastructure
+  - job: create_infrastructure_int
     pool:
       vmImage: 'Ubuntu-16.04'
     steps:
@@ -69,3 +70,50 @@ stages:
     steps:
     - script: echo 'Deploy WebApp to INTEGRATION.'
       displayName: 'This is the step where the Web App is actually deployed in the INT env.'
+# CREATE TESTING ENV INFRASTRUCTURE
+- stage: create_testing
+  displayName: 'Create the TEST environment'
+  dependsOn: deploy_to_int
+  jobs:
+  - job: create_infrastructure_test
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - script: echo 'Creating the TEST env infrastructure'
+      displayName: 'Building the TEST environment - infra'
+# DEPLOY TO TESTING ENVIRONMENT
+- stage: deploy_to_test
+  displayName: 'Deploy WebApp to TEST env'
+  dependsOn: create_testing
+  condition: succeeded()
+  jobs:
+  - job: deploy_artifacts_to_test
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - script: echo 'Deploying the WebApp to the TEST env...'
+      displayName: 'Step for deploying the Web App to the TEST env.'
+# CREATE THE DEMO ENVIRONMENT INFRASTRUCTURE
+- stage: create_demo
+  displayName: 'Create DEMO env infrastructure'
+  dependsOn: deploy_to_test
+  jobs:
+  - job: create_infrastructure_demo
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - script: echo 'Creating infra for the DEMO environment...'
+      displayName: 'Create infra for DEMO'
+# DEPLOY THE WEB APP TO DEMO ENV
+- stage: deploy_to_demo
+  displayName: 'Deploy WebApp artifacts to the DEMO env.'
+  dependsOn: create_demo
+  jobs:
+  - job: deploy_artifacts_to_demo
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - script: echo 'Deploying the WebApp artifacts to the DEMO environment'
+      displayName: 'Deploy WebApp to DEMO env.'
+### END OF PIPELINE
+...
