@@ -82,12 +82,12 @@ stages:
         csmFile: armtemplates/int/webapp/azuredeploy.json
         csmParametersFile: armtemplates/int/webapp/azuredeploy.parameters.json
         outputVariable: 'webAppPortalName'
-#    - task: AzureRmWebAppDeployment@3
-#      displayName: "Deploy the code to the WebApp"
-#      inputs:
-#        azureSubscription: $(subscription)
-#        WebAppName: 'SN-INT-webapp'
-#        Package: $(Build.ArtifactStagingDirectory/**/*.zip)
+    - task: AzureRmWebAppDeployment@3
+      displayName: "Deploy the code to the WebApp"
+      inputs:
+        azureSubscription: $(subscription)
+        WebAppName: 'SN-INT-webapp'
+        Package: $(Build.ArtifactStagingDirectory/**/*.zip)
 
 # BUILD THE STAGING ENVIRONMENT IN AZURE
 - stage: build_staging
