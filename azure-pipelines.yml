@@ -79,8 +79,8 @@ stages:
         resourceGroupName: 'integration-rg'
         deploymentMode: Validation
         location: 'West Europe'
-        csmFile: armtemplates/webapp/azuredeploy.json
-        csmParametersFile: armtemplates/webapp/azuredeploy.parameters.json
+        csmFile: armtemplates/int/webapp/azuredeploy.json
+        csmParametersFile: armtemplates/int/webapp/azuredeploy.parameters.json
 
 # BUILD THE STAGING ENVIRONMENT IN AZURE
 - stage: build_staging
