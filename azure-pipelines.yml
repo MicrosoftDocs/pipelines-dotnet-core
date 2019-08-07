@@ -1,129 +1,89 @@
 ---
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+### Create a new file for the Azure Pipelines
 
 trigger:
 - feature-stage
 
 variables:
-  buildConfiguration: Release
+  buildConfiguration: 'Release'
+  subscription: 'Visual Studio Enterprise'
 
 stages:
-# RESTORE, BUILD, TEST, PUBLISH THE WEB APP & PUBLISH THE BUILD ARTIFACT 
-- stage: build_code
-  displayName: 'Build and Test the WebApp'
+# BUILD THE WEB APP - RESTORE, BUILD, TEST, PUBLISH, PUBLISH BUILD ARTIFACTS
+- stage: buildapp
+  displayName: 'Build the Web App'
   jobs:
-  - job: build_webapp
+  - job: build_app_job
     pool:
       vmImage: 'Ubuntu-16.04'
     steps:
     - task: DotNetCoreCLI@2
-      displayName: 'Restore dependencies'
+      displayName: 'Restore Dependencies'
       inputs:
         command: restore
         projects: '**/*.csproj'
     - task: DotNetCoreCLI@2
-      displayName: 'Build Code for WebApp'
+      displayName: 'Buld the Web App'
       inputs:
         command: build
         projects: '**/*.csproj'
         arguments: '--configuration $(buildConfiguration)'
     - task: DotNetCoreCLI@2
-      displayName: 'Testing the code - Unit Tests'
+      displayName: 'Test the Web App - Unit Tests'
       inputs:
         command: test
         projects: '**/*Tests/*.csproj'
         arguments: '--configuration $(buildConfiguration)'
     - task: DotNetCoreCLI@2
-      displayName: 'Publish code for Web App'
+      displayName: 'Publish the Web App - ZIP'
       inputs:
         command: publish
-        publishWebProjects: True
+        publishWebProjects: true
         arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
         zipAfterPublish: true
     - task: PublishBuildArtifacts@1
-      displayName: 'Publish build artifacts for the WebApp deployment'
+      displayName: 'Publish Build Artifacts for Web App'
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'code-drop_v1'
-# CREATE THE INTEGRATION INFRASTRUCTURE STAGE
-- stage: create_integration
-  displayName: 'Create the INT environment infrastructure'
-  dependsOn: build_code
+        ArtifactName: 'webapp-artifact'
+
+
+# BUILD THE INTEGRATION ENVIRONMENT IN AZURE
+- stage: build_integration
+  displayName: 'Build the INT infrastructure in Azure'
+  dependsOn: build_app
   jobs:
-  - job: create_infrastructure_int
-    pool:
+  - template: ci/templates/create-resource-group.yml
+    parameters:
+      name: create_infrastructure
+      displayName: 'Building the infrastructure for INT environment.'
       vmImage: 'Ubuntu-16.04'
-    steps:
-    - script: echo 'Build INT environment - logical schema for now'
-      displayName: 'First step in building the INT infra'
-# DEPLOY THE WEB APP TO INTEGRATION STAGE      
-- stage: deploy_to_int
-  displayName: 'Deploy the WebApp to INT environment'
-  dependsOn: create_integration
+      resourceGroupName: 'integration'
+      subscription: $(subscription)
+
+# BUILD THE STAGING ENVIRONMENT IN AZURE
+- stage: build_staging
+  displayName: 'Build the STAGING infra in Azure'
   jobs:
-  - job: deploy_artifacts_to_int
-    pool:
+  - template: ci/templates/create-resource-group.yml
+    parameters:
+      name: create_infrastructure
+      displayName: 'Building the infrastructure for STAGING environment.'
       vmImage: 'Ubuntu-16.04'
-    steps:
-    - script: echo 'Deploy WebApp to INTEGRATION.'
-      displayName: 'This is the step where the Web App is actually deployed in the INT env.'
-# CREATE TESTING ENV INFRASTRUCTURE
-- stage: create_testing
-  displayName: 'Create the TEST environment'
-  dependsOn: deploy_to_int
+      resourceGroupName: 'staging'
+      subscription: $(subscription)
+
+# BUILD THE DEMO ENVIORNMENT IN AZURE
+- stage: build_demo
+  displayName: 'Build the DEMO infras in Azure'
   jobs:
-  - job: create_infrastructure_test
-    pool:
+  - template: ci/templates/create-resource-group.yml
+    parameters:
+      name: create_infrastructure
+      displayName: 'Building the infrastructure for DEMO environment'
       vmImage: 'Ubuntu-16.04'
-    steps:
-    - script: echo 'Creating the TEST env infrastructure'
-      displayName: 'Building the TEST environment - infra'
-# DEPLOY TO TESTING ENVIRONMENT
-- stage: deploy_to_test
-  displayName: 'Deploy WebApp to TEST env'
-  dependsOn: create_testing
-  condition: succeeded()
-  jobs:
-  - job: deploy_artifacts_to_test
-    pool:
-      vmImage: 'Ubuntu-16.04'
-    steps:
-    - script: echo 'Deploying the WebApp to the TEST env...'
-      displayName: 'Step for deploying the Web App to the TEST env.'
-# CREATE THE DEMO ENVIRONMENT INFRASTRUCTURE
-- stage: create_demo
-  displayName: 'Create DEMO env infrastructure'
-  dependsOn: deploy_to_test
-  jobs:
-  - job: create_infrastructure_demo
-    pool:
-      vmImage: 'Ubuntu-16.04'
-    steps:
-    - script: echo 'Creating infra for the DEMO environment...'
-      displayName: 'Create infra for DEMO'
-# DEPLOY THE WEB APP TO DEMO ENV
-- stage: deploy_to_demo
-  displayName: 'Deploy WebApp artifacts to the DEMO env.'
-  dependsOn: create_demo
-  jobs:
-  - job: deploy_artifacts_to_demo
-    pool:
-      vmImage: 'Ubuntu-16.04'
-    steps:
-    - script: echo 'Deploying the WebApp artifacts to the DEMO environment'
-      displayName: 'Deploy WebApp to DEMO env.'
-- stage: run_system_quality_checks
-  displayName: 'Run the System Quality tests.'
-  dependsOn: deploy_to_int
-  jobs:
-  - job: run_non_functional_tests
-    pool:
-      vmImage: 'Ubuntu-16.04'
-    steps:
-    - script: echo 'Run system quality tests...'
-      displayName: 'Run the system quality tests.'
-### END OF PIPELINE
+      resourceGroupName: 'demo'
+      subscription: $(subscription)
+
 ...
