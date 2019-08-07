@@ -11,7 +11,7 @@ variables:
 
 stages:
 # BUILD THE WEB APP - RESTORE, BUILD, TEST, PUBLISH, PUBLISH BUILD ARTIFACTS
-- stage: buildapp
+- stage: build_app
   displayName: 'Build the Web App'
   jobs:
   - job: build_app_job
