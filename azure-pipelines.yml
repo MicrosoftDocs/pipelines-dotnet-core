@@ -62,6 +62,26 @@ stages:
       resourceGroupName: 'integration'
       subscription: $(subscription)
 
+# DEPLOY RESOURCES TO THE INTEGRATION ENVIRONMENT
+- stage: deploy_int
+  displayName: 'Deploy Resource in the Azure INT Resource Group'
+  dependsOn: build_integration
+  condition: succeeded()
+  jobs:
+  - job: deploy_int_job
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy resources in the INT Resource Group'
+      inputs:
+        azureSubscription: $(subscription)
+        resourceGroupName: 'integration-rg'
+        deploymentMode: Validation
+        location: 'West Europe'
+        csmFile: armtemplates/webapp/azuredeploy.json
+        csmParametersFile: armtemplates/webapp/azuredeploy.parameters.json
+
 # BUILD THE STAGING ENVIRONMENT IN AZURE
 - stage: build_staging
   displayName: 'Build the STAGING infra in Azure'
