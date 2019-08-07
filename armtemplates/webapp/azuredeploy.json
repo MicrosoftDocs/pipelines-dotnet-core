@@ -9,11 +9,28 @@
             },
             "minLength": 2
         },
-        "sku": {
+        "skuName": {
             "type": "string",
-            "defaultValue": "S1",
+            "allowedValues": [
+                "F1",
+                "D1",
+                "S1",
+                "S2",
+                "S3"
+            ],
             "metadata": {
-                "description": "The SKU of App Service Plan, by default is Standard S1"
+                "description": "The Size of the Workers assigned to the ASP."
+            }
+        },
+        "skuCapacity": {
+            "type": "int",
+            "allowedValues": [
+                1,
+                2,
+                3
+            ],
+            "metadata": {
+                "description": "Number of workers assigned to the ASP."
             }
         },
         "location": {
@@ -39,7 +56,10 @@
 
             },
             "dependsOn": [],
-            "sku": "[parameters('sku')]"
+            "sku": {
+                "name": "[parameters('skuName')]",
+                "capacity": "[parameters('skuCapacity')]"
+            }
         },
         {
             "apiVersion": "2018-11-01",
@@ -48,7 +68,10 @@
             "name": "[variables('webAppPortalName')]",
             "location": "[parameters('location')]",
             "properties": {
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+                "siteConfig": {
+                    "alwaysOn": true
+                }
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"

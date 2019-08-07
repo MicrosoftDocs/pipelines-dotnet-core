@@ -4,6 +4,12 @@
     "parameters": {
         "webAppName": {
             "value": "SN-INT"
+        },
+        "skuName": {
+            "value": "S1"
+        },
+        "skuCapacity": {
+            "value": 1
         }
     }
 }
