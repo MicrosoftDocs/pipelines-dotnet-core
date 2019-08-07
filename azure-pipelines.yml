@@ -7,7 +7,7 @@ trigger:
 
 variables:
   buildConfiguration: 'Release'
-  subscription: 'Visual Studio Enterprise'
+  subscription: 'loginsp'
 
 stages:
 # BUILD THE WEB APP - RESTORE, BUILD, TEST, PUBLISH, PUBLISH BUILD ARTIFACTS
