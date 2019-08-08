@@ -81,7 +81,7 @@ stages:
         csmFile: armtemplates/int/webapp/azuredeploy.json
         csmParametersFile: armtemplates/int/webapp/azuredeploy.parameters.json
         outputVariable: 'webAppPortalName'
-    - script: 'ls -la $(Build.ArtifactStagingDirectory) && ls -la $(System.ArtifactsDirectory) && $(System.DefaultWorkingDirectory)'
+    - script: 'ls -la $(Build.ArtifactStagingDirectory) && ls -la $(System.ArtifactsDirectory) && ls -la $(System.DefaultWorkingDirectory)'
       displayName: 'Printing folder content'
     - task: AzureRmWebAppDeployment@3
       displayName: "Deploy the code to the WebApp"
