@@ -40,9 +40,11 @@ stages:
       inputs:
         command: publish
         publishWebProjects: true
-        arguments: '--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/bin/WebApp'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin/WebApp'
         zipAfterPublish: true
-    - publish: $(System.DefaultWorkingDirectory)/bin/WebApp
+    - script: 'ls -la $(Build.ArtifactStagingDirectory)/bin/WebApp'
+      displayName: 'Print the DROP directory'
+    - publish: $(Build.ArtifactStaginDirectory)/bin/WebApp
       artifact: WebApp_drop
 
 # BUILD THE INTEGRATION ENVIRONMENT IN AZURE
@@ -61,7 +63,7 @@ stages:
 # DEPLOY RESOURCES TO THE INTEGRATION ENVIRONMENT
 - stage: deploy_int
   displayName: 'Deploy Resource in the Azure INT Resource Group'
-  dependsOn: build_app
+  dependsOn: build_integration
   condition: succeeded()
   jobs:
   - job: deploy_int_job
