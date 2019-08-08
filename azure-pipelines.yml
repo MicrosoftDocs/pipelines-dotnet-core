@@ -110,6 +110,38 @@ stages:
       resourceGroupName: 'staging'
       subscription: $(subscription)
 
+# DEPLOY TO THE STAGING ENVIRONMENT
+- stage: deploy_staging
+  displayName: 'Deploy web app to Staging'
+  jobs:
+  - job: deploy_staging_job
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy ARM Template for Staging'
+      inputs:
+        azureSubscription: $(subscription)
+        resourceGroupName: 'staging-rg'
+        deploymentMode: Incremental
+        location: 'West Europe'
+        csmFile: armtemplates/staging/webapp/azuredeploy.json
+        csmParametersFile: armtemplates/staging/webapp/azuredeploy.parameters.json
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download the Artifact - staging'
+      inputs:
+        downloadPath: $(Syste.DefaultWorkingDirectory)
+        artifactName: 'webapp_content'
+    - script: 'ls -la $(System.DefaultWorkingDirectory)'
+      displayName: 'Print Working Directory child items'
+    - task: AzureRmWebAppDeployment@4
+      displayName: 'Deploy the Artifact to the Web App - staging'
+      inputs:
+        azureSubscription: $(subscription)
+        WebAppName: 'SN-Staging-webapp'
+        Package: $(System.DefaultWorkingDirectory)/webapp_content
+        DeploymentType: webDeploy        
+
 # BUILD THE DEMO ENVIORNMENT IN AZURE
 - stage: build_demo
   displayName: 'Build the DEMO infras in Azure'
