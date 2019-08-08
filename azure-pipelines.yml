@@ -42,11 +42,8 @@ stages:
         publishWebProjects: true
         arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
         zipAfterPublish: true
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Build Artifacts for Web App'
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'webapp-artifact'
+    - publish: $(System.DefaultWorkingDirectory)/bin/WebApp
+      artifact: WebApp_drop
 
 # BUILD THE INTEGRATION ENVIRONMENT IN AZURE
 - stage: build_integration
@@ -81,14 +78,18 @@ stages:
         csmFile: armtemplates/int/webapp/azuredeploy.json
         csmParametersFile: armtemplates/int/webapp/azuredeploy.parameters.json
         outputVariable: 'webAppPortalName'
-    - script: 'ls -la $(Build.ArtifactStagingDirectory) && ls -la $(System.ArtifactsDirectory) && ls -la $(System.DefaultWorkingDirectory)'
-      displayName: 'Printing folder content'
+    - script: 'ls -la $(System.DefaultWorkingDirectory)/bin/WebApp/'
+      displayName: 'Print files in the WebApp artifact directory'
+    - task: Delay@1
+      displayName: 'Verify if the files are correct...'
+      inputs:
+        delayForMinutes: '1'
     - task: AzureRmWebAppDeployment@3
-      displayName: "Deploy the code to the WebApp"
+      displayName: 'Deploy artifact to the Web App'
       inputs:
         azureSubscription: $(subscription)
         WebAppName: 'SN-INT-webapp'
-        Package: $(System.DefaultWorkingDirectory)/**/*.zip
+        Package: $(System.DefaultWorkingDirectory)/bin/WebApp/WebApp_drop
 
 # BUILD THE STAGING ENVIRONMENT IN AZURE
 - stage: build_staging
