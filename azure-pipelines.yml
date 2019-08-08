@@ -61,7 +61,7 @@ stages:
 # DEPLOY RESOURCES TO THE INTEGRATION ENVIRONMENT
 - stage: deploy_int
   displayName: 'Deploy Resource in the Azure INT Resource Group'
-  dependsOn: build_integration
+  dependsOn: build_app
   condition: succeeded()
   jobs:
   - job: deploy_int_job
