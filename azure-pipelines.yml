@@ -36,16 +36,19 @@ stages:
         projects: '**/*Tests/*.csproj'
         arguments: '--configuration $(buildConfiguration)'
     - task: DotNetCoreCLI@2
-      displayName: 'Publish the Web App - ZIP'
+      displayName: 'Publish the Web App - #ZIP'
       inputs:
         command: publish
         publishWebProjects: true
         arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin/WebApp'
-        zipAfterPublish: true
+        #zipAfterPublish: true
     - script: 'ls -la $(Build.ArtifactStagingDirectory)/bin/WebApp'
       displayName: 'Print the DROP directory'
-    - publish: $(Build.ArtifactStaginDirectory)/bin/WebApp
-      artifact: WebApp_drop
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish build artifacts for the web app'
+      inputs:
+        PathtoPublish: $(Build.ArtifactStagingDirectory)/bin/WebApp
+        ArtifactName: 'webapp_drop'
 
 # BUILD THE INTEGRATION ENVIRONMENT IN AZURE
 - stage: build_integration
