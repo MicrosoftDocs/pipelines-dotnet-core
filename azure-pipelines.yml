@@ -80,10 +80,6 @@ stages:
         outputVariable: 'webAppPortalName'
     - script: 'ls -la $(System.DefaultWorkingDirectory)/bin/WebApp/'
       displayName: 'Print files in the WebApp artifact directory'
-    - task: Delay@1
-      displayName: 'Verify if the files are correct...'
-      inputs:
-        delayForMinutes: '1'
     - task: AzureRmWebAppDeployment@3
       displayName: 'Deploy artifact to the Web App'
       inputs:
