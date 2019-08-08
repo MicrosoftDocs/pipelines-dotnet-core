@@ -96,6 +96,7 @@ stages:
         azureSubscription: $(subscription)
         WebAppName: 'SN-INT-webapp'
         Package: $(System.DefaultWorkingDirectory)/webapp_content
+        UseWebDeploy: true 
 
 # BUILD THE STAGING ENVIRONMENT IN AZURE
 - stage: build_staging
