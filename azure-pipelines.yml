@@ -47,75 +47,71 @@ stages:
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'webapp-artifact'
-    - task: AzureRmWebAppDeployment@3
-      displayName: "Testing deployment to Web App..."
-      inputs:
-        azureSubscription: $(subscription)
-        webAppName: 'SN-INT-webapp'
 
 # BUILD THE INTEGRATION ENVIRONMENT IN AZURE
-#- stage: build_integration
-#  displayName: 'Build the INT infrastructure in Azure'
-#  dependsOn: build_app
-#  jobs:
-#  - template: ci/templates/create-resource-group.yml
-#    parameters:
-#      name: create_infrastructure
-#      displayName: 'Building the infrastructure for INT environment.'
-#      vmImage: 'Ubuntu-16.04'
-#      resourceGroupName: 'integration'
-#      subscription: $(subscription)
+- stage: build_integration
+  displayName: 'Build the INT infrastructure in Azure'
+  dependsOn: build_app
+  jobs:
+  - template: ci/templates/create-resource-group.yml
+    parameters:
+      name: create_infrastructure
+      displayName: 'Building the infrastructure for INT environment.'
+      vmImage: 'Ubuntu-16.04'
+      resourceGroupName: 'integration'
+      subscription: $(subscription)
 
 # DEPLOY RESOURCES TO THE INTEGRATION ENVIRONMENT
-#- stage: deploy_int
-#  displayName: 'Deploy Resource in the Azure INT Resource Group'
-#  dependsOn: build_integration
-#  condition: succeeded()
-#  jobs:
-#  - job: deploy_int_job
-#    pool:
-#      vmImage: 'Ubuntu-16.04'
-#    steps:
-#    - task: AzureResourceGroupDeployment@2
-#      displayName: 'Deploy resources in the INT Resource Group'
-#      inputs:
-#        azureSubscription: $(subscription)
-#        resourceGroupName: 'integration-rg'
-#        deploymentMode: Incremental
-#        location: 'West Europe'
-#        csmFile: armtemplates/int/webapp/azuredeploy.json
-#        csmParametersFile: armtemplates/int/webapp/azuredeploy.parameters.json
-#        outputVariable: 'webAppPortalName'
-#    - script: 'ls -la $(Build.ArtifactStagingDirectory) && ls -la $(System.ArtifactsDirectory) && $(System.DefaultWorkingDirectory)'
-#    - task: AzureRmWebAppDeployment@3
-#      displayName: "Deploy the code to the WebApp"
-#      inputs:
-#        azureSubscription: $(subscription)
-#        WebAppName: 'SN-INT-webapp'
-#        Package: $(Build.ArtifactStagingDirectory)/**/*.zip
+- stage: deploy_int
+  displayName: 'Deploy Resource in the Azure INT Resource Group'
+  dependsOn: build_integration
+  condition: succeeded()
+  jobs:
+  - job: deploy_int_job
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy resources in the INT Resource Group'
+      inputs:
+        azureSubscription: $(subscription)
+        resourceGroupName: 'integration-rg'
+        deploymentMode: Incremental
+        location: 'West Europe'
+        csmFile: armtemplates/int/webapp/azuredeploy.json
+        csmParametersFile: armtemplates/int/webapp/azuredeploy.parameters.json
+        outputVariable: 'webAppPortalName'
+    - script: 'ls -la $(Build.ArtifactStagingDirectory) && ls -la $(System.ArtifactsDirectory) && $(System.DefaultWorkingDirectory)'
+      displayName: 'Printing folder content'
+    - task: AzureRmWebAppDeployment@3
+      displayName: "Deploy the code to the WebApp"
+      inputs:
+        azureSubscription: $(subscription)
+        WebAppName: 'SN-INT-webapp'
+        Package: $(System.DefaultWorkingDirectory)/**/*.zip
 
 # BUILD THE STAGING ENVIRONMENT IN AZURE
-#- stage: build_staging
-#  displayName: 'Build the STAGING infra in Azure'
-#  jobs:
-#  - template: ci/templates/create-resource-group.yml
-#    parameters:
-#      name: create_infrastructure
-#      displayName: 'Building the infrastructure for STAGING environment.'
-#      vmImage: 'Ubuntu-16.04'
-#      resourceGroupName: 'staging'
-#      subscription: $(subscription)
-#
-## BUILD THE DEMO ENVIORNMENT IN AZURE
-#- stage: build_demo
-#  displayName: 'Build the DEMO infras in Azure'
-#  jobs:
-#  - template: ci/templates/create-resource-group.yml
-#    parameters:
-#      name: create_infrastructure
-#      displayName: 'Building the infrastructure for DEMO environment'
-#      vmImage: 'Ubuntu-16.04'
-#      resourceGroupName: 'demo'
-#      subscription: $(subscription)
+- stage: build_staging
+  displayName: 'Build the STAGING infra in Azure'
+  jobs:
+  - template: ci/templates/create-resource-group.yml
+    parameters:
+      name: create_infrastructure
+      displayName: 'Building the infrastructure for STAGING environment.'
+      vmImage: 'Ubuntu-16.04'
+      resourceGroupName: 'staging'
+      subscription: $(subscription)
+
+# BUILD THE DEMO ENVIORNMENT IN AZURE
+- stage: build_demo
+  displayName: 'Build the DEMO infras in Azure'
+  jobs:
+  - template: ci/templates/create-resource-group.yml
+    parameters:
+      name: create_infrastructure
+      displayName: 'Building the infrastructure for DEMO environment'
+      vmImage: 'Ubuntu-16.04'
+      resourceGroupName: 'demo'
+      subscription: $(subscription)
 
 ...
