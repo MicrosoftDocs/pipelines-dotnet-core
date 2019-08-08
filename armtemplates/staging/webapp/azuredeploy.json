@@ -74,5 +74,11 @@
                 "[resourceId('Microsoft.Web/serverfarms', variables('aspName'))]"
             ]
         }
-    ]
+    ],
+    "outputs": {
+        "webAppName": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Web/sites', variables('webAppName'))]"
+        }
+    }
 }
