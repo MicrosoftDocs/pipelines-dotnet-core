@@ -41,9 +41,9 @@ stages:
         command: publish
         publishWebProjects: true
         arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin/WebApp'
-        #zipAfterPublish: true
-    - script: 'ls -la $(Build.ArtifactStagingDirectory)/bin/WebApp'
-      displayName: 'Print the DROP directory'
+        zipAfterPublish: true
+    #- script: 'ls -la $(Build.ArtifactStagingDirectory)/bin/WebApp'
+    #  displayName: 'Print the DROP directory'
     - task: PublishBuildArtifacts@1
       displayName: 'Publish build artifacts for the web app'
       inputs:
