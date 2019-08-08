@@ -48,7 +48,7 @@ stages:
       displayName: 'Publish build artifacts for the web app'
       inputs:
         PathtoPublish: $(Build.ArtifactStagingDirectory)/bin/WebApp
-        ArtifactName: 'webapp_drop'
+        ArtifactName: 'webapp_content'
         
 
 # BUILD THE INTEGRATION ENVIRONMENT IN AZURE
@@ -83,12 +83,11 @@ stages:
         location: 'West Europe'
         csmFile: armtemplates/int/webapp/azuredeploy.json
         csmParametersFile: armtemplates/int/webapp/azuredeploy.parameters.json
-        outputVariable: 'webAppPortalName'
     - task: DownloadBuildArtifacts@0
       displayName: 'Download artifacts'
       inputs:
         downloadPath: $(System.DefaultWorkingDirectory)
-        artifactName: 'webapp_drop'
+        artifactName: 'webapp_content'
     - script: 'ls -la $(System.DefaultWorkingDirectory)/'
       displayName: 'Print files in the WebApp artifact directory'
     - task: AzureRmWebAppDeployment@3
@@ -96,7 +95,7 @@ stages:
       inputs:
         azureSubscription: $(subscription)
         WebAppName: 'SN-INT-webapp'
-        Package: $(System.DefaultWorkingDirectory)/webapp_drop
+        Package: $(System.DefaultWorkingDirectory)/webapp_content
 
 # BUILD THE STAGING ENVIRONMENT IN AZURE
 - stage: build_staging
