@@ -40,7 +40,7 @@ stages:
       inputs:
         command: publish
         publishWebProjects: true
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        arguments: '--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/bin/WebApp'
         zipAfterPublish: true
     - publish: $(System.DefaultWorkingDirectory)/bin/WebApp
       artifact: WebApp_drop
@@ -52,7 +52,7 @@ stages:
   jobs:
   - template: ci/templates/create-resource-group.yml
     parameters:
-      name: create_infrastructure
+      name: create_infrastructure_int
       displayName: 'Building the infrastructure for INT environment.'
       vmImage: 'Ubuntu-16.04'
       resourceGroupName: 'integration'
@@ -93,7 +93,7 @@ stages:
   jobs:
   - template: ci/templates/create-resource-group.yml
     parameters:
-      name: create_infrastructure
+      name: create_infrastructure_staging
       displayName: 'Building the infrastructure for STAGING environment.'
       vmImage: 'Ubuntu-16.04'
       resourceGroupName: 'staging'
@@ -105,7 +105,7 @@ stages:
   jobs:
   - template: ci/templates/create-resource-group.yml
     parameters:
-      name: create_infrastructure
+      name: create_infrastructure_demo
       displayName: 'Building the infrastructure for DEMO environment'
       vmImage: 'Ubuntu-16.04'
       resourceGroupName: 'demo'
