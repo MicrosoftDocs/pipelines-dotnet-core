@@ -1,0 +1,78 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appBaseName": {
+            "type": "string",
+            "minLength": 2,
+            "metadata": {
+                "description": "Base name for the WebApp and App Service Plan"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for the resources to be deployed"
+            }
+        },
+        "skuName": {
+            "type": "string",
+            "allowedValues": [
+                "F1",
+                "D1",
+                "S1",
+                "S2",
+                "S3"
+            ],
+            "metadata": {
+                "description": "The size of the Worker assigned to the App Service Plan"
+            }
+        },
+        "skuCapacity": {
+            "type": "int",
+            "allowedValues": [
+                1,
+                2,
+                3
+            ],
+            "metadata": {
+                "description": "The number of Workers assigned to the App Service Plan"
+            }
+        }
+    },
+    "variables": {
+        "webAppName": "[concat(parameters('appBaseName'), '-WebApp')]",
+        "aspName": "[concat(parameters('appBaseName'), '-ASP')]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2018-02-01",
+            "type": "Microsoft.Web/serverfarms",
+            "kind": "app",
+            "name": "[variables('aspName')]",
+            "location": "[parameters('location')]",
+            "properties": {},
+            "dependsOn": [],
+            "sku": {
+                "name": "[parameters('skuName')]",
+                "capacity": "[parameters('skuCapacity')]"
+            }
+        },
+        {
+            "apiVersion": "2018-11-01",
+            "type": "Microsoft.Web/sites",
+            "kind": "app",
+            "name": "[variables('webAppName')]",
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('aspName'))]",
+                "siteConfig": {
+                    "alwaysOn": true
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('aspName'))]"
+            ]
+        }
+    ]
+}
