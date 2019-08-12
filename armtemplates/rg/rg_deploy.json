@@ -1,0 +1,60 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "orgName": {
+            "type": "array",
+            "defaultValue": [
+                "Negoescu",
+                "UiPath",
+                "SebiBlu"
+            ],
+            "metadata": {
+                "description": "The Organization benefiting from the Resource Groups."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "westeurope",
+            "metadata": {
+                "description": "The location where the RGs will be deployed."
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2018-05-01",
+            "name": "[concat('rg_', parameters('orgName')[copyIndex()])]",
+            "location": "[parameters('location')]",
+            "properties": {},
+            "copy": {
+                "name": "rgOrg",
+                "count": "[length(parameters('orgName'))]"
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "name": "linkedTemplate",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parametersLink": {
+                    "uri": "",
+                    "contentVersion": "1.0.0.0"
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "rgName0": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Resources/resourceGroups', concat('rg_', parameters('orgName')[0]))]"
+        }
+    }
+}
