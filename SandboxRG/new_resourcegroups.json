@@ -1,0 +1,38 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "orgRG": {
+            "type": "array",
+            "defaultValue": [
+                "UiPath",
+                "Avanade",
+                "Microsoft"
+            ],
+            "metadata": {
+                "description": "The Organization that require a Resource Group."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "westeurope",
+            "metadata": {
+                "description": "The location of the Resource Groups."
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2018-05-01",
+            "name": "[concat('rg', parameters('orgRG')[copyIndex()])]",
+            "location": "[parameters('location')]",
+            "properties": {},
+            "copy": {
+                "name": "rgCount",
+                "count": "[length(parameters('orgRG'))]" 
+            }
+        }
+    ]
+}
