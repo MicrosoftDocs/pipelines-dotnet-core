@@ -1,0 +1,157 @@
+---
+
+### Create a new file for the Azure Pipelines
+
+trigger:
+- feature-stage
+
+variables:
+  buildConfiguration: 'Release'
+  subscription: 'loginsp'
+
+stages:
+# BUILD THE WEB APP - RESTORE, BUILD, TEST, PUBLISH, PUBLISH BUILD ARTIFACTS
+- stage: build_app
+  displayName: 'Build the Web App'
+  jobs:
+  - job: build_app_job
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore Dependencies'
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
+    - task: DotNetCoreCLI@2
+      displayName: 'Buld the Web App'
+      inputs:
+        command: build
+        projects: '**/*.csproj'
+        arguments: '--configuration $(buildConfiguration)'
+    - task: DotNetCoreCLI@2
+      displayName: 'Test the Web App - Unit Tests'
+      inputs:
+        command: test
+        projects: '**/*Tests/*.csproj'
+        arguments: '--configuration $(buildConfiguration)'
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish the Web App - #ZIP'
+      inputs:
+        command: publish
+        publishWebProjects: true
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin/WebApp'
+        #zipAfterPublish: true
+    #- script: 'ls -la $(Build.ArtifactStagingDirectory)/bin/WebApp'
+    #  displayName: 'Print the DROP directory'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish build artifacts for the web app'
+      inputs:
+        PathtoPublish: $(Build.ArtifactStagingDirectory)/bin/WebApp
+        ArtifactName: 'webapp_content'
+        
+
+# BUILD THE INTEGRATION ENVIRONMENT IN AZURE
+- stage: build_integration
+  displayName: 'Build the INT infrastructure in Azure'
+  dependsOn: build_app
+  jobs:
+  - template: ci/templates/create-resource-group.yml
+    parameters:
+      name: create_infrastructure_int
+      displayName: 'Building the infrastructure for INT environment.'
+      vmImage: 'Ubuntu-16.04'
+      resourceGroupName: 'integration'
+      subscription: $(subscription)
+
+# DEPLOY RESOURCES TO THE INTEGRATION ENVIRONMENT
+- stage: deploy_int
+  displayName: 'Deploy Resource in the Azure INT Resource Group'
+  dependsOn: build_integration
+  condition: succeeded()
+  jobs:
+  - job: deploy_int_job
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy resources in the INT Resource Group'
+      inputs:
+        azureSubscription: $(subscription)
+        resourceGroupName: 'integration-rg'
+        deploymentMode: Incremental
+        location: 'West Europe'
+        csmFile: armtemplates/int/webapp/azuredeploy.json
+        csmParametersFile: armtemplates/int/webapp/azuredeploy.parameters.json
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download artifacts'
+      inputs:
+        downloadPath: $(System.DefaultWorkingDirectory)
+        artifactName: 'webapp_content'
+    - script: 'ls -la $(System.DefaultWorkingDirectory)/'
+      displayName: 'Print files in the WebApp artifact directory'
+    - task: AzureRmWebAppDeployment@3
+      displayName: 'Deploy artifact to the Web App'
+      inputs:
+        azureSubscription: $(subscription)
+        WebAppName: 'SN-INT-webapp'
+        Package: $(System.DefaultWorkingDirectory)/webapp_content
+        UseWebDeploy: true 
+
+# BUILD THE STAGING ENVIRONMENT IN AZURE
+- stage: build_staging
+  displayName: 'Build the STAGING infra in Azure'
+  jobs:
+  - template: ci/templates/create-resource-group.yml
+    parameters:
+      name: create_infrastructure_staging
+      displayName: 'Building the infrastructure for STAGING environment.'
+      vmImage: 'Ubuntu-16.04'
+      resourceGroupName: 'staging'
+      subscription: $(subscription)
+
+# DEPLOY TO THE STAGING ENVIRONMENT
+- stage: deploy_staging
+  displayName: 'Deploy web app to Staging'
+  jobs:
+  - job: deploy_staging_job
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy ARM Template for Staging'
+      inputs:
+        azureSubscription: $(subscription)
+        resourceGroupName: 'staging-rg'
+        deploymentMode: Incremental
+        location: 'West Europe'
+        csmFile: armtemplates/staging/webapp/azuredeploy.json
+        csmParametersFile: armtemplates/staging/webapp/azuredeploy.parameters.json
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download the Artifact - staging'
+      inputs:
+        downloadPath: $(Syste.DefaultWorkingDirectory)
+        artifactName: 'webapp_content'
+    - script: 'ls -la $(System.DefaultWorkingDirectory)'
+      displayName: 'Print Working Directory child items'
+    - task: AzureRmWebAppDeployment@4
+      displayName: 'Deploy the Artifact to the Web App - staging'
+      inputs:
+        azureSubscription: $(subscription)
+        WebAppName: 'SN-Staging-webapp'
+        Package: $(System.DefaultWorkingDirectory)/webapp_content
+        DeploymentType: webDeploy        
+
+# BUILD THE DEMO ENVIORNMENT IN AZURE
+- stage: build_demo
+  displayName: 'Build the DEMO infras in Azure'
+  jobs:
+  - template: ci/templates/create-resource-group.yml
+    parameters:
+      name: create_infrastructure_demo
+      displayName: 'Building the infrastructure for DEMO environment'
+      vmImage: 'Ubuntu-16.04'
+      resourceGroupName: 'demo'
+      subscription: $(subscription)
+
+...

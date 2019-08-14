@@ -1,0 +1,18 @@
+parameters:
+  name: ''
+  vmImage: ''
+  displayName: ''
+  resourceGroupName: ''
+  subscription: ''
+
+jobs:
+- job: ${{ parameters.name }}
+  pool:
+    vmImage: ${{ parameters.vmImage }}
+  steps:
+  - task: AzureCLI@1
+    displayName: ${{ parameters.displayName }}
+    inputs:
+      azureSubscription: ${{ parameters.subscription }}
+      scriptLocation: 'inlineScript'
+      inlineScript: az group create --name ${{ parameters.resourceGroupName }}-rg --location westeurope

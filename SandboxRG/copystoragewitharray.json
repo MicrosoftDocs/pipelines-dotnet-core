@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "organizationName": {
+            "type": "array",
+            "defaultValues": [
+                "sebinego",
+                "sebidevops",
+                "negoescudev",
+                "blunsebi",
+                "sebiuipath"
+            ],
+            "metadata": {
+                "description": "Name of the Organizations requiring a Storage Account."
+            }
+        },
+        "storageSku": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "metadata": {
+                "description": "SKU of the Storage Accounts."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location of the Storage Accounts to be deployed."
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2017-06-01",
+            "name": "[concat('storage', parameters('organizationName')[copyIndex()])]",
+            "location": "[parameters('location')]",
+            "kind": "Storage",
+            "properties": {},
+            "copy": {
+                "name": "storageCopy",
+                "count": "[length(parameters('organizationName'))]"
+            }
+        }
+    ]
+}
