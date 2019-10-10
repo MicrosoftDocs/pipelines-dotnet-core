@@ -1,0 +1,57 @@
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - readme.md
+
+pr:
+- master
+- develop
+
+strategy:
+  matrix:
+    linux:
+      imageName: "ubuntu-16.04"
+    macos:
+      imageName: "macOS-10.14"
+    win:
+      imageName: "vs2017-win2016"
+  maxParallel: 3
+
+pool:
+  vmImage: $(imageName)
+
+variables:
+  buildConfiguration: 'Release'
+  sdkVersion: '2.2.x'
+
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    version: $(sdkVersion)
+  displayName: 'Install .NET Core SDK'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: restore
+    projects: '**/*.csproj'
+  displayName: 'Restore nuget packages'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    configuration: '$(buildConfiguration)'
+  displayName: 'dotnet build $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: custom
+    custom: tool
+    arguments: 'install -g dotnetsay'
+  displayName: 'Install dotnetsay'
+
+- script: dotnetsay "Hello from global tool"
+  displayName: 'Using "dotnetsay" global tool'
