@@ -1,3 +1,7 @@
+| Build status (Ubuntu 16.04)| Mac Os| Windows |
+|:---------|:---------|:---------|
+|[![Build Status](https://dev.azure.com/fabiohenrique/pipelines-dotnet-core/_apis/build/status/Fabioh.pipelines-dotnet-core?branchName=master&jobName=Job&configuration=Job%20linux)](https://dev.azure.com/fabiohenrique/pipelines-dotnet-core/_build/latest?definitionId=5&branchName=master)|[![Build Status](https://dev.azure.com/fabiohenrique/pipelines-dotnet-core/_apis/build/status/Fabioh.pipelines-dotnet-core?branchName=master&jobName=Job&configuration=Job%20macos)](https://dev.azure.com/fabiohenrique/pipelines-dotnet-core/_build/latest?definitionId=5&branchName=master)|[![Build Status](https://dev.azure.com/fabiohenrique/pipelines-dotnet-core/_apis/build/status/Fabioh.pipelines-dotnet-core?branchName=master&jobName=Job&configuration=Job%20win)](https://dev.azure.com/fabiohenrique/pipelines-dotnet-core/_build/latest?definitionId=5&branchName=master)|
+
 # Sample ASP.NET Core application for Azure Pipelines docs
 
 For information on how to set up a pipeline for this repository, see [Create your first pipeline](https://docs.microsoft.com/azure/devops/pipelines/get-started-yaml?view=azure-devops).
