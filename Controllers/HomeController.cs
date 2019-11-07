@@ -8,6 +8,7 @@ using pipelines_dotnet_core.Models;
 
 namespace pipelines_dotnet_core.Controllers
 {
+// VRK 10/31/2019 --- Just made a change.
     public class HomeController : Controller
     {
         public IActionResult Index()
