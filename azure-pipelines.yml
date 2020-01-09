@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'Hosted VS2017'
 
 variables:
   buildConfiguration: 'Release'
