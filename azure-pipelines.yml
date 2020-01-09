@@ -15,3 +15,12 @@ variables:
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- task: VSBuild@1
+  inputs:
+    solution: $(solution)
+    msbuildArgs: '/p:DeployOnBuild=true
+                  /p:WebPublishMethod=Package 
+                  /p:PackageAsSingleFile=true'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
