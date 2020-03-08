@@ -20,6 +20,3 @@ steps:
 - script: dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
   displayName: 'dotnet publish $(buildConfiguration)'
 - task: PublishBuildArtifacts@1
-  pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-  artifactName: 'drop' 
-  publishLocation: 'Container'
