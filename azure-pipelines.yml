@@ -16,8 +16,10 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
-- task: AzureWebApp@1
+- task: AzureRmWebAppDeployment@4
   inputs:
-    azureSubscription: 'b9167e1d-d52f-48fe-859d-65bc32b6c2f6'
-    appName: 'acto-dev-uswest-app-01'
-    package: $(System.DefaultWorkingDirectory)/**/*.zip
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'ACTO DEV 2(b9167e1d-d52f-48fe-859d-65bc32b6c2f6)'
+    appType: 'webApp'
+    WebAppName: 'acto-dev-uswest-app-01'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
