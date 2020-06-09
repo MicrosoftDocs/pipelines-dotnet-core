@@ -1,15 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>pipelines_dotnet_core</RootNamespace>
+    <UserSecretsId>050ca03b-84f2-4c7b-8895-f1a0339e3a58</UserSecretsId>
   </PropertyGroup>
-
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>
-
 </Project>
