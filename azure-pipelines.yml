@@ -14,18 +14,18 @@ steps:
   displayName: 'dotnet restore'
   inputs:
     command: restore
-    projects: '**/$(ProjectName).csproj'
+    projects: '**/*.csproj'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
   inputs:
-    projects: '**/$(ProjectName).csproj'
+    projects: '**/*.csproj'
     arguments: '--configuration Release'
 - task: DotNetCoreCLI@2
   displayName: 'dotnet publish'
   inputs:
     command: publish
     publishWebProjects: false
-    projects: '**/$(ProjectName).csproj'
+    projects: '**/*.csproj'
     arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
