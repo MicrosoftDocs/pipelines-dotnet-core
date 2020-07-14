@@ -9,7 +9,6 @@ pool:
   vmImage: 'windows-latest'
   variables:
     buildConfiguration: 'Release'
-
   steps:
   - task: DotNetCoreCLI@2
     displayName: 'dotnet restore'
