@@ -7,7 +7,6 @@ trigger:
   - master
 pool:
   vmImage: 'windows-latest'
-<<<<<<< HEAD
   variables:
     buildConfiguration: 'Release'
   steps:
@@ -30,7 +29,6 @@ pool:
       arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'
-=======
 
 variables:
   buildConfiguration: 'Release'
@@ -68,4 +66,4 @@ steps:
   inputs:
     pathToPublish: $(Build.ArtifactStagingDirectory)
     artifactName: MyBuildOutputs
->>>>>>> 4e26ef2996fd35ed91e32685756fbc4dc226e87b
+
