@@ -28,3 +28,9 @@ steps:
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
     artifactName: 'myWebsiteName'
+    
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
