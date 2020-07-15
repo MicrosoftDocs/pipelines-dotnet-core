@@ -30,5 +30,12 @@ jobs:
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact Zip'
       inputs:
-        artifactName: 'AzureTest'
-        
+        artifactName: 'AzureTest
+      artifacts:
+        name: "myArtifact"
+
+
+
+
+
+
