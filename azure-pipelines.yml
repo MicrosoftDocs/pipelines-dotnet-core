@@ -29,3 +29,5 @@ jobs:
         arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: drop'
+      inputs:
+        artifactName: 'AzureTest'
