@@ -6,7 +6,7 @@
 jobs:
   - job: AzureTest
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
       variables:
         buildConfiguration: 'Release'
     steps:
@@ -30,4 +30,4 @@ jobs:
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact Zip'
       inputs:
-        ArtifactName: "AzureDeploy"
+        artifactName: 'AzureDeploy'
