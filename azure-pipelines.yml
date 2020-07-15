@@ -6,7 +6,7 @@
 jobs:
   - job: AzureTest
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: 'windows-latest'
       variables:
         buildConfiguration: 'Release'
     steps:
@@ -31,3 +31,10 @@ jobs:
       displayName: 'Publish Artifact Zip'
       inputs:
         artifactName: 'AzureDeploy'
+    - task: AzureWebApp@1
+      displayName: 'Publish Web'
+      inputs:
+        azureSubscription: 'AzureTraining'
+        appName: 'AzureTraining'
+        package: '$(System.DefaultWorkingDirectory)'
+        customWebConfig: '-Handler iisnode -NodeStartFile server.js -appType node'
