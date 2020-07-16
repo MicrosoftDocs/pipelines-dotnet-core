@@ -27,10 +27,14 @@ jobs:
         publishWebProjects: false
         projects: '**/*.csproj'
         arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
-    - task: AzureWebApp@1
-      displayName: Azure Web App Deploy
-      inputs:
-        appType: webApp
-        azureSubscription: 'AzureDemoPipelineSC'
-        appName: 'AzureDemoAppVitas'
-        package: $(Build.ArtifactStagingDirectory)/*.zip
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact Zip'
+      inputs:
+        ArtifactName: 'AzureDeploy'
+    - task: AzureWebApp@1
+      displayName: Web App Deploy
+      inputs:
+        appType: webApp
+        azureSubscription: 'AzureTraining'
+        appName: 'PipelineDotNetDemo'
+        package: $(Build.ArtifactStagingDirectory)/*.zip
