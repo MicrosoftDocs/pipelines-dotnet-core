@@ -32,9 +32,10 @@ jobs:
       inputs:
         artifactName: 'AzureDeploy'
     - task: AzureWebApp@1
-      displayName: 'Publish App Service'
-      inputs:
-        azureSubscription: 'AzureTraining'
-        appName: 'PipelineDotNetDemo'
-        package: '$(System.DefaultWorkingDirectory)'
-        customWebConfig: '-Handler iisnode -NodeStartFile server.js -appType node'
+      displayName: Azure Web App Deploy
+      inputs: 
+        appType: webApp
+        azureSubscription: 'AzureDemo'
+        appName: 'PipelineDotDemo'
+        package: $(Build.ArtifactStagingDirectory)/*.zip
+        
