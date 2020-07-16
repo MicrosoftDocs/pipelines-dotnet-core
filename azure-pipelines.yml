@@ -30,8 +30,9 @@ jobs:
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact Zip'
       inputs:
-        artifactName: 'AzureDeploy'
+        ArtifactName: 'AzureDeploy'
     - task: AzureWebApp@1
+<<<<<<< HEAD
       displayName: Azure Web App Deploy
       inputs: 
         appType: webApp
@@ -39,3 +40,11 @@ jobs:
         appName: 'PipelineDotDemo'
         package: $(Build.ArtifactStagingDirectory)/*.zip
         
+=======
+      displayName: Web App Deploy
+      inputs:
+        appType: webApp
+        azureSubscription: 'AzureTraining'
+        appName: 'PipelineDotNetDemo'
+        package: $(Build.ArtifactStagingDirectory)/*.zip
+>>>>>>> development
