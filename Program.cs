@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace pipelines_dotnet_core
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
+            // Hei Jan hva skjer
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
