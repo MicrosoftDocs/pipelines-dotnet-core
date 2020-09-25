@@ -27,6 +27,7 @@ steps:
   inputs:
     command: build
     Dockerfile: Dockerfile
+    tags: $(Build.BuildId)
 - task: Docker@2
   displayName: Push image
   inputs:
@@ -35,5 +36,5 @@ steps:
     repository: $(imageName)
     command: push
     tags: |
-      test1
-      test2
+      $(Build.BuildId)
+      
