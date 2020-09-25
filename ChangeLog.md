@@ -41,6 +41,8 @@ ENTRYPOINT ["dotnet", "pipelines-dotnet-core.dll"]
 
 Intentamos seguir este [tutorial](https://docs.microsoft.com/es-es/azure/devops/pipelines/ecosystems/containers/build-image?view=azure-devops)
 
+### Paso previo
+
 Tambien es verdad que al actualizar el proyecto anterior y utilizar la version 5.0 la pipeline que ya teniamos no funciona ya que el fichero _azure-pipelines.yml_ no esta bien
 
 Por lo visto las maquinas virtuales que compilan el codigo no tendran (en el momento de la compilacion) el sdk 5.0 instalado. Depues de pelearme un rato, buscando si hay algun post o alguien que lo explique, lo que he realizado es instalar un agente en mi pc local y configurar el yaml para que le indique a Azure que utilice el Agent Pool instalado en mi maquina ( es un poco estupido, pero por lo menos me permite seguir con mis pruebas)
@@ -65,3 +67,6 @@ por
 pool:
   name: 'SelfHostedPcAlberto'
 ```
+
+### Continuar
+

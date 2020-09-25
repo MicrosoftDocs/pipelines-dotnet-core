@@ -13,7 +13,17 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  imageName: 'pipelines-dotnet-core-dockerhub'
 
+#steps:
+#- script: dotnet build --configuration $(buildConfiguration)
+#  displayName: 'dotnet build $(buildConfiguration)'
+
+#https://docs.microsoft.com/es-es/azure/devops/pipelines/tasks/build/docker?view=azure-devops
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+- task: Docker@2
+  displayName: Build an image
+  inputs:
+    repository: $(imageName)
+    command: build
+    Dockerfile: Dockerfile
