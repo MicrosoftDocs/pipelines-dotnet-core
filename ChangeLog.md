@@ -113,6 +113,40 @@ steps:
     repository: $(imageName)
 ```
 
+## Continous deployment
+
+Ahora que ya tenemos el contenedor en un sitio debieramos ser capaces de actualizar nuestra app con los cambios automaticamente en producción.
+
+Para ellos los pasos que he seguido de momento no he visto como poder automatizarlos, que seguro que se puede, entiendo que la configuración en un entorno de producción tendra algo de "cermonia" pero que al final solo se debe realizar una vez (por aplicación)
+
+Lo que he hecho es ir a azure y crear un App Service lo mas sencillo posible y lo he registrado con un nombre en concreto para que apunte a *****.azurewebsites.net
+
+Le he indicado que se publica con un contendor de docker, que correra sobre linux, y que esta en Europa. Me he acogido al plan de dev/test gratuito
+
+De momento al indicar que es container, en las opciones correspondientes le he indicado que necesito solo 1 contenedor, docker compose ya lo veremos mas adelante, 
+Tambien indicamos que el container lo queremos de docker hub y como encontrarlo (de momento sin etiqueta), de todas maneras esto se sobrescribira luego en las pipelines
+
+Y continuamos, hasta crear el servicio
+
+El siguiente paso es ir a configurar el release en Azure Pipelines, para que cuando se genere una compilacion esta se acabe subiendo a al app service
+
+Incialmente indicamos que el artifact es el build y que se debe lanzar la ejecuion del release cuando exista uno nuevo.
+
+Creamos un step que sea "Deploy to Azure App Service", lo configuramos con el app service que creamos anteriormente y asignamos la subscripcion, y finalmente registramos otra vez la info de Docker Hub (que sobrescribira a la anterior) indicando.
+
+* Registry or namespace: Nuestra cuenta de docker hub
+* Image: La imagen creada
+* Tag: Podemos indicar a docker hub el tag con una variable que sea el build id y utilizarla luego para la publicacion
+
+Y con esto ya deberia estar listo cuando hagamos un commit se deberia:
+
+* Lanzar el build
+* Si el build funciona se subee un container a docker hub
+* El release se entera de que el build funciono e indica a azure app service que actualice el contenedor
+
+Toma ya!
+
 ## Otros enlaces para continuar despues
 
-<https://azuredevopslabs.com/labs/azuredevops/yaml/>
+* [Docker compose](https://docs.docker.com/compose/)
+* [Tutorial de manejo de YAML](https://azuredevopslabs.com/labs/azuredevops/yaml/)
