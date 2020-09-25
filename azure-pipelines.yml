@@ -14,6 +14,7 @@ pool:
 variables:
   buildConfiguration: 'Release'
   imageName: 'pipelines-dotnet-core-dockerhub'
+  dockerHub: 'Acolom83_DokerHub_ServiceConnectionName'
 
 #steps:
 #- script: dotnet build --configuration $(buildConfiguration)
@@ -26,3 +27,13 @@ steps:
   inputs:
     command: build
     Dockerfile: Dockerfile
+- task: Docker@2
+  displayName: Push image
+  inputs:
+    containerRegistry: |
+      $(dockerHub)
+    repository: $(imageName)
+    command: push
+    tags: |
+      test1
+      test2
