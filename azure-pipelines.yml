@@ -13,7 +13,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  imageName: 'pipelines-dotnet-core-dockerhub'
+  imageName: 'acolom83/pipelines-dotnet-core-dockerhub'
   dockerHubCoonectionName: 'Acolom83_DokerHub_ServiceConnectionName'
 
 #steps:
