@@ -70,3 +70,49 @@ pool:
 
 ### Continuar
 
+Al modificar el yaml y cambiar el step pasamos de simplmente compilar la aplicacion a generar un container con nuestra aplicacion, la compilacion se realiza en el propio setting indicando el Dockerfile. [Aqui](https://docs.microsoft.com/es-es/azure/devops/pipelines/tasks/build/docker?view=azure-devops) hay mas info de la parametrizacion de la tarea
+
+```yaml
+steps:
+- script: dotnet build --configuration $(buildConfiguration)
+  displayName: 'dotnet build $(buildConfiguration)'
+```
+
+```yaml
+steps:
+- task: Docker@2
+  displayName: Build an image
+  inputs:
+    command: build
+    Dockerfile: Dockerfile
+```
+
+## Subir el container a Docker Hub
+
+Una vez ya tenemos el contendor preparado lo que tenemos que hacer entiendo es subirlo a un registro, en este caso docker hub, nos basamos en este [post](https://docs.microsoft.com/en-us/azure/devops/pipelines/ecosystems/containers/push-image?view=azure-devops)
+
+Los pasos a seguir son configurar los accesos a docker hub por parte de Azure Pipelines (el acceso lo controla azure asi que no tenemos que dejar nada en el codigo fuente, 'simplemente' debemos tener configurado los accesos y desde la pipelina referenciamos el acceso, no las credenciales [https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml])
+
+El YAML de azure pipeline se quedara así
+
+```yaml
+steps:
+- task: Docker@2
+  displayName: Login to Docker Hub
+  inputs:
+    command: login
+    containerRegistry: $(dockerHubCoonectionName)
+- task: Docker@2
+  displayName: Build and push
+  inputs:
+    command: buildAndPush
+    Dockerfile: Dockerfile
+    tags: $(Build.BuildId)
+    containerRegistry: |
+      $(dockerHubCoonectionName)
+    repository: $(imageName)
+```
+
+## Otros enlaces para continuar despues
+
+<https://azuredevopslabs.com/labs/azuredevops/yaml/>
