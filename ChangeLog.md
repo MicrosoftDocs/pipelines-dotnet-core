@@ -226,10 +226,60 @@ steps:
     azureSubscription: 'Pago por uso (c0f8bb21-9442-4caa-a7dd-c68270269415)'
     appName: 'acolom-pipelines-dotnet-core'
     multicontainerConfigFile: '$(System.DefaultWorkingDirectory)/_acolom.pipelines-dotnet-core/docker-compose-azure.yml/docker-compose-azure.yml'
-    containerCommand: up
 ```
 
-Lo que nos falta es poder utilizar la etiqueta con el BuilId para sustituirlo y que funcione bien
+Lo que nos falta es poder utilizar la etiqueta con el BuilId para sustituirlo y que funcione bien, para ello nos hemos tenido que instalar la tarea [replace tokens](https://github.com/qetza/vsts-replacetokens-task#readme) para poder insertar la etiqueta del build en el docker-compose
+
+Finalmente los steps del azure-pipelines se queda asi
+
+```yaml
+#https://docs.microsoft.com/es-es/azure/devops/pipelines/tasks/build/docker?view=azure-devops
+steps:
+#login en docker
+- task: Docker@2
+  displayName: Login to Docker Hub
+  inputs:
+    command: login
+    containerRegistry: $(dockerHubCoonectionName)
+#publicar el contenidor con la etiqueta del build id
+- task: Docker@2
+  displayName: Build and push
+  inputs:
+    command: buildAndPush
+    Dockerfile: Dockerfile
+    tags: $(Build.BuildId)
+    containerRegistry: |
+      $(dockerHubCoonectionName)
+    repository: $(imageName)
+#copiar el fichero docker-compose-azure.yml a la salida
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: '**/docker-compose-azure.yml'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+#reemplazar los tokens basicamente se trata de modificar el docker-compose-azure.yml para que contenga la etiqueta $(Build.BuildId)
+- task: replacetokens@3
+  inputs:
+    rootDirectory: '$(Build.ArtifactStagingDirectory)'
+    targetFiles: '**/docker-compose-azure.yml'
+    encoding: 'auto'
+    writeBOM: true
+    actionOnMissing: 'fail'
+    keepToken: false
+    tokenPrefix: '$('
+    tokenSuffix: ')'
+    useLegacyPattern: false
+    enableTelemetry: true
+# publicar el artefacto para que luego el release lo pueda recuperar
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'docker-compose-azure.yml'
+    publishLocation: 'Container'
+```
+
+
+
 
 ## Todo list
 
