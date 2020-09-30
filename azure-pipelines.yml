@@ -41,10 +41,24 @@ steps:
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: '**/docker-compose-azure.yml'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    TargetFolder: '- task: replacetokens@3
+
+- task: replacetokens@3
+  inputs:
+    rootDirectory: '$(Build.ArtifactStagingDirectory)'
+    targetFiles: '**/docker-compose-azure.yml'
+    encoding: 'auto'
+    writeBOM: true
+    actionOnMissing: 'fail'
+    keepToken: false
+    tokenPrefix: '$('
+    tokenSuffix: ')'
+    useLegacyPattern: false
+    enableTelemetry: true
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'docker-compose-azure.yml'
     publishLocation: 'Container'
-      
+
