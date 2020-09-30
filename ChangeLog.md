@@ -278,13 +278,11 @@ steps:
     publishLocation: 'Container'
 ```
 
-
-
-
 ## Todo list
 
-* Docker Compose
+* ~~Docker Compose~~
 * Configuraciones de variables por entorno
+* Test Coverage y testing integrado en azure
 
 ## Otros enlaces para continuar despues
 
