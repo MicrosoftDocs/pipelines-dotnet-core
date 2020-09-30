@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  web:
+    image: acolom83:pipelines-dotnet-core-dockerhub:$(Build.BuildId)
+    ports:
+      - "80:80"
+  redis:
+    image: "redis:alpine"
