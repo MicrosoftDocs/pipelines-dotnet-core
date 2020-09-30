@@ -36,4 +36,9 @@ steps:
     containerRegistry: |
       $(dockerHubCoonectionName)
     repository: $(imageName)
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'docker-compose-azure.yml'
+    publishLocation: 'Container'
       
