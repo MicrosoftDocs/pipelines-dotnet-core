@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   web:
-    image: acolom83/pipelines-dotnet-core-dockerhub:20
+    image: acolom83/pipelines-dotnet-core-dockerhub
     ports:
       - "80:80"
   redis:
