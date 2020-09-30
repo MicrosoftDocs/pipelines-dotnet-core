@@ -39,8 +39,7 @@ steps:
     repository: $(imageName)
 - task: CopyFiles@2
   inputs:
-    SourceFolder: './'
-    Contents: 'docker-compose-azure.yml'
+    Contents: '**/docker-compose-azure.yml'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   inputs:
