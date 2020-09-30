@@ -144,9 +144,101 @@ Y con esto ya deberia estar listo cuando hagamos un commit se deberia:
 * Si el build funciona se subee un container a docker hub
 * El release se entera de que el build funciono e indica a azure app service que actualice el contenedor
 
-Toma ya!
+## Agregamos redis cache
+
+Este paso, agregamos algo decodigo sencillo para utilizar la cache de redis para ello utilizamos este post
+
+https://medium.com/net-core/in-memory-distributed-redis-caching-in-asp-net-core-62fb33925818
+
+Una vez lo tengamos funcionando en nuestra maquina veremos como montarlo utilizando docker
+
+Hemos agregado al codigo el RedisController, e instalado redis en la maquina de desarrollo
+
+En desarrollo funciona, pero luego al generear el contenedor y lanzarlos la aplicacion falla
+
+Asi que vamos a intentar meter el fichero docker-compose para hacerlo funcionar en un contenedor
+
+https://docs.docker.com/compose/gettingstarted/
+
+redis_1  | 1:C 28 Sep 2020 11:00:18.443 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+redis_1  | 1:C 28 Sep 2020 11:00:18.443 # Redis version=6.0.8, bits=64, commit=00000000, modified=0, pid=1, just started
+redis_1  | 1:C 28 Sep 2020 11:00:18.443 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+redis_1  | 1:M 28 Sep 2020 11:00:18.444 * Running mode=standalone, port=6379.
+redis_1  | 1:M 28 Sep 2020 11:00:18.444 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+
+
+Al trabajar en las configuraciones por defecto la app y la cache se levantan y configuran sobre el mismo puerto
+
+docker-compose up
+
+Si queremos regenerar el build tenemos que hacer [docker-compose build](https://github.com/docker/compose/issues/1487)
+
+Una vez visto que funciona con un fichero tipo este
+
+```yaml
+version: "3.8"
+services:
+  web:
+    image: acolom83:pipelines-dotnet-core-dockerhub:$(Build.BuildId)
+    ports:
+      - "80:80"
+  redis:
+    image: "redis:alpine"
+```
+
+Tenemos que modificar el release y el pipeline en azure para que cuando despleguemos tenga en cuenta esto, para ello debemos modificar el release de azure, para indicarle que utilice un fichero docker-compose para que genere el despliegue en la azure app service
+
+Para ello en el release pipeline encontre la siguiente tarea que podria susituir a la existen de Deploy Azure App Service
+
+```yaml
+steps:
+- task: AzureWebAppContainer@1
+  displayName: 'Azure Web App on Container Deploy: acolom-pipelines-dotnet-core'
+  inputs:
+    azureSubscription: 'Pago por uso (c0f8bb21-9442-4caa-a7dd-c68270269415)'
+    appName: 'acolom-pipelines-dotnet-core'
+    multicontainerConfigFile: 'docker-compose-azure.yml'
+    containerCommand: up
+```
+
+Lo que ocurre es que debemos publicar un artefacto en el build que sea el docker compose azure o algo para que azure lo pueda entender
+
+```yaml
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: '**/docker-compose-azure.yml'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'docker-compose-azure.yml'
+    publishLocation: 'Container'
+```
+
+Y luego configurar el released para que coja este artefacto que y lo ponga en el Azure App Service
+
+```yaml
+steps:
+- task: AzureWebAppContainer@1
+  displayName: 'Azure Web App on Container Deploy: acolom-pipelines-dotnet-core'
+  inputs:
+    azureSubscription: 'Pago por uso (c0f8bb21-9442-4caa-a7dd-c68270269415)'
+    appName: 'acolom-pipelines-dotnet-core'
+    multicontainerConfigFile: '$(System.DefaultWorkingDirectory)/_acolom.pipelines-dotnet-core/docker-compose-azure.yml/docker-compose-azure.yml'
+    containerCommand: up
+```
+
+Lo que nos falta es poder utilizar la etiqueta con el BuilId para sustituirlo y que funcione bien
+
+## Todo list
+
+* Docker Compose
+* Configuraciones de variables por entorno
 
 ## Otros enlaces para continuar despues
 
 * [Docker compose](https://docs.docker.com/compose/)
 * [Tutorial de manejo de YAML](https://azuredevopslabs.com/labs/azuredevops/yaml/)
+
+* [Tutorial Intersante de configuracion de NgInx](https://codeburst.io/load-balancing-an-asp-net-core-web-app-using-nginx-and-docker-66753eb08204)
