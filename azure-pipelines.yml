@@ -28,15 +28,15 @@ steps:
   inputs:
     command: login
     containerRegistry: $(dockerHubCoonectionName)
-- task: Docker@2
-  displayName: Build and push
-  inputs:
-    command: buildAndPush
-    Dockerfile: Dockerfile
-    tags: $(Build.BuildId)
-    containerRegistry: |
-      $(dockerHubCoonectionName)
-    repository: $(imageName)
+# - task: Docker@2
+#   displayName: Build and push
+#   inputs:
+#     command: buildAndPush
+#     Dockerfile: Dockerfile
+#     tags: $(Build.BuildId)
+#     containerRegistry: |
+#       $(dockerHubCoonectionName)
+#     repository: $(imageName)
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
