@@ -1,4 +1,4 @@
-# Sample ASP.NET Core application for Azure Pipelines docs(Branch)
+# Sample ASP.NET Core application for Azure Pipelines docs(Comment Command)
 
 [![Build Status](https://bfayez.visualstudio.com/Azure%20DevOps/_apis/build/status/bfayez.pipelines-dotnet-core?branchName=master)](https://bfayez.visualstudio.com/Azure%20DevOps/_build/latest?definitionId=1&branchName=master)
 
