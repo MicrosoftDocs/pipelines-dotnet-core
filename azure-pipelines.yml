@@ -15,3 +15,9 @@ variables:
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'c2c5f6cc-dc52-4a42-a7fc-de8065d1c5b1'
+    appName: 'pieplineapp'
+   
