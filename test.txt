@@ -1,2 +1,7 @@
 this is a test file
-comment 2
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'c2c5f6cc-dc52-4a42-a7fc-de8065d1c5b1'
+    appName: 'pieplineapp'
+
+    Another line test 
