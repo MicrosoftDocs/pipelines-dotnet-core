@@ -22,3 +22,15 @@ jobs:
        with:
         name: "artifact-4.0"
         path: path/to/artifact/world.txt
+        
+     
+     - name: Upload client binaries to release
+       if: contains(github.ref, 'master')
+       uses: svenstaro/upload-release-action@v1-release
+       with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: artifact-4.0
+        asset_name: artifact-4.0
+        tag: "${{ steps.gitversion.outputs.fullSemVer }}"
+        overwrite: true
+    
