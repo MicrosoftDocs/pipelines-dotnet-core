@@ -22,16 +22,25 @@ jobs:
        with:
         name: "artifact-4.0"
         path: path/to/artifact/world.txt
-        
-     
-     - name: Upload client binaries to release
-       if: contains(github.ref, 'master')
-       uses: svenstaro/upload-release-action@v1-release
+    
+     - name: Upload a Build Artifact
+       uses: actions/upload-artifact@v2.2.1
+       with: 
+       # Artifact name
+        name: artifact-4.0
+         # A file, directory or wildcard pattern that describes what to upload
+        path: path/to/artifact/world.txt
+         # The desired behavior if no files are found using the provided path.
+     - name: Create a Release
+       uses: actions/create-release@v1.1.4
        with:
-        file: artifact-4.0
-        asset_name: artifact-4.0
-        tag: "${{ steps.gitversion.outputs.fullSemVer }}"
-        overwrite: true
+            # The name of the tag. This should come from the webhook payload, `github.GITHUB_REF` when a user pushes a new tag
+         tag_name: test
+        # The name of the release. For example, `Release v1.0.1`
+         release_name: test
+       # Text describing the contents of the tag.
+     
+
         
       
     
