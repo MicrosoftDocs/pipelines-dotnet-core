@@ -31,14 +31,7 @@ jobs:
          # A file, directory or wildcard pattern that describes what to upload
         path: path/to/artifact/world.txt
          # The desired behavior if no files are found using the provided path.
-     - name: Create a Release
-       uses: actions/create-release@v1.1.4
-       with:
-            # The name of the tag. This should come from the webhook payload, `github.GITHUB_REF` when a user pushes a new tag
-         tag_name: test
-        # The name of the release. For example, `Release v1.0.1`
-         release_name: test
-       # Text describing the contents of the tag.
+
      
 
         
