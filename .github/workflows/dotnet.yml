@@ -17,4 +17,4 @@ jobs:
         with:
           name: pipelines-dotnet-core
           path: |
-            README.md
+            Views
