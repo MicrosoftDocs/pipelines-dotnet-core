@@ -20,5 +20,5 @@ jobs:
 
      - uses: actions/upload-artifact@v2
        with:
-        name: "artifact-${{ steps.gitversion.outputs.fullSemVer }}"
+        name: "artifact-4.0"
         path: path/to/artifact/world.txt
