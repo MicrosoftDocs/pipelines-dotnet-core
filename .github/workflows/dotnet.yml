@@ -12,8 +12,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: shirleyrosa99/pipelines-dotnet-core
-          path: Views/
+     - uses: actions/checkout@v2
+
+     - run: mkdir -p path/to/artifact
+
+     - run: echo hello > path/to/artifact/world.txt
+
+     - uses: actions/upload-artifact@v2
+       with:
+        name: my-artifact
+        path: path/to/artifact/world.txt
