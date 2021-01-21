@@ -1,4 +1,3 @@
-[![Build Status](https://dev.azure.com/locke12110705/Pipeline/_apis/build/status/locke1211.pipelines-dotnet-core?branchName=master)](https://dev.azure.com/locke12110705/Pipeline/_build/latest?definitionId=6&branchName=master)
 # Sample ASP.NET Core application for Azure Pipelines docs
 
 For information on how to set up a pipeline for this repository, see [Create your first pipeline](https://docs.microsoft.com/azure/devops/pipelines/get-started-yaml?view=azure-devops).
