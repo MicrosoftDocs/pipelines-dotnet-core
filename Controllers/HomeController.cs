@@ -16,7 +16,7 @@ namespace pipelines_dotnet_core.Controllers
         }
 
 
-        public IActionResult Landing()
+        public IActionResult LandingPage()
         {
             return View();
         }
