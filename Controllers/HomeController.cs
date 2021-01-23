@@ -16,7 +16,7 @@ namespace pipelines_dotnet_core.Controllers
         }
 
 
-        public IActionResult Demo()
+        public IActionResult DemoPage()
         {
             return View();
         }
