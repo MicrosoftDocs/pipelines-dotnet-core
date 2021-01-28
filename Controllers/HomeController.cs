@@ -18,7 +18,8 @@ namespace pipelines_dotnet_core.Controllers
 
         public IActionResult DemoingLandingPage()
         {
-            return View();
+           
+           return View();
         }
 
         public IActionResult Privacy()
