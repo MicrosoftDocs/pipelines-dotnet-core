@@ -1,4 +1,5 @@
 trigger:
+
 - master
 
 pool:
@@ -19,3 +20,15 @@ steps:
     command: 'build'
     arguments: '--configuration $(buildConfiguration)'
   displayName: 'dotnet build $(buildConfiguration)'
+  
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: true
+
+- task: PublishBuildArtifacts@1
+  displayName: "Upload Artifacts"
+  inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
