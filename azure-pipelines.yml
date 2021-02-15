@@ -1,0 +1,14 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/bdf.ksjbfs.kjfsdfdsfdsfsdfctions
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    version: '5.0.x'
+    includePreviewVersions: true # Required for preview versions
+
+- task: UseDotNet@2
+  inputs:
+    version: '3.0.x'
+    packageType: runtim
+    
