@@ -18,6 +18,7 @@ steps:
   displayName: 'dotnet build $(buildConfiguration)'
 
 - task: CopyFiles@2
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     Contents: '**'
     TargetFolder: '$(build.artifactstagingdirectory)'
