@@ -1,17 +1,24 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-# More GitHub Actions for Azure: https://github.com/Azure/bdf.ksjbfs.kjfsdfdsfdsfsdfctions
-
-steps:
 - task: UseDotNet@2
   inputs:
     version: '5.0.x'
     includePreviewVersions: true # Required for preview versions
-
-- task: UseDotNet@2
+  
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
   inputs:
-    version: '3.0.x'
-    packageType: runtim
-    
+    command: 'build'
+    configuration: $(buildConfiguration)
+  
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test'
+  inputs:
+    command: 'test'
+    arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
+    publishTestResults: true
+    projects: 'MyTestLibrary' # update with your test project directory
+  
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage report'
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
