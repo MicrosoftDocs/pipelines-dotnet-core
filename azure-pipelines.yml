@@ -15,35 +15,16 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: UseDotNet@2
-  displayName: 'Install .NET Core SDK'
-  inputs:
-    version: 5.0.x
-    performMultiLevelLookup: true
-    includePreviewVersions: true # Required for preview versions
-- task: UseDotNet@2
-  inputs:
-    version: '3.0.x'
-    packageType: runtime
-
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
-
- 
-# download the artifact drop from the previous job
-- task: DownloadBuildArtifacts@1
+- task: DotNetCoreCLI@2
   inputs:
-    buildType: 'specific'
-    project: '685ef0f4-c73a-41f6-b230-b51612098646'
-    pipeline: '4'
-    buildVersionToDownload: 'latest'
-    downloadType: 'single'
-    downloadPath: '$(pipeline.Workspace)'
-
+    command: 'publish'
+    publishWebProjects: true
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Visual Studio Ultimate con MSDN(a40c5ef6-54f6-4e81-aa18-d17cce19fcf3)'
     appType: 'webApp'
     appName: 'app-service-pr-devops'
-    package: ' $(pipeline.Workspace)/*.zip'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
     deploymentMethod: 'auto'
