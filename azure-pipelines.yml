@@ -1,4 +1,11 @@
 # ASP.NET Core
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'Visual Studio Ultimate con MSDN(a40c5ef6-54f6-4e81-aa18-d17cce19fcf3)'
+    appType: 'webApp'
+    appName: 'app-service-pr-devops'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    deploymentMethod: 'auto'
 # Build and test ASP.NET Core projects targeting .NET Core.
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
