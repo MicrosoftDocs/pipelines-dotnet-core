@@ -27,6 +27,11 @@ steps:
 
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+ - task: DownloadBuildArtifacts@0
+    inputs:
+      artifactName: drop
+      downloadPath: '$(System.DefaultWorkingDirectory)'
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Visual Studio Ultimate con MSDN(a40c5ef6-54f6-4e81-aa18-d17cce19fcf3)'
