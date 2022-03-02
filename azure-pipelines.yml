@@ -27,7 +27,7 @@ jobs:
     displayName: "If Succed Parameter"
     condition: eq(${{ parameters.succeed}}, false)
   - script: |
-      if [${{parameters.succeed}} -eq false]
+      if [[${{parameters.succeed}} -eq false]]
       then
         exit 1
       fi
