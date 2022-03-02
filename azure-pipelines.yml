@@ -23,14 +23,10 @@ jobs:
   steps:
   - script: echo "building..."
     displayName: "Echo Building"
-  - script: echo "will fail"
+  - script: |
+      echo "will fail"
+      exit 1
     displayName: "If Succed Parameter"
     condition: eq(${{ parameters.succeed}}, false)
-  - script: |
-      if ["${{parameters.succeed}}" == "False"]
-      then
-        exit 1
-      fi
-      exit 0
   - script: dotnet build --configuration $(buildConfiguration)
     displayName: 'dotnet build $(buildConfiguration)'
