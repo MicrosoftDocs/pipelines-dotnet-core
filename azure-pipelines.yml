@@ -3,6 +3,12 @@
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
+parameters:
+- name: succeed
+  displayName: Succeed or fail
+  type: boolean
+  default: false
+
 trigger:
 - master
 
@@ -12,13 +18,19 @@ pool:
 variables:
   buildConfiguration: 'Release'
 
-steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
-
-- task: PublishCodeCoverageResults@1
-  inputs:
-    codeCoverageTool: 'JaCoCo'
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/site/jacoco/jacoco.xml'
-    pathToSources: '$(System.DefaultWorkingDirectory)/**/site/jacoco'
-    failIfCoverageEmpty: true
+jobs:
+- job: Build
+  steps:
+  - script: echo "building..."
+    displayName: "Echo Building"
+  - script: echo "will fail"
+    displayName: "If Succed Parameter"
+    condition: eq(${{ parameters.succeed}}, false)
+  - script: |
+      if [${{parameter.succeed}} -eq false]
+      then
+        exit 1
+      fi
+      exit 0
+  - script: dotnet build --configuration $(buildConfiguration)
+    displayName: 'dotnet build $(buildConfiguration)'
