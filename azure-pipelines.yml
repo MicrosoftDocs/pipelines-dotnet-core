@@ -10,7 +10,15 @@ parameters:
   default: false
 
 trigger:
-- master
+  branches:
+    include:
+      - master
+      - release/*
+    exclude:
+      - release/version-0.1
+  paths:
+    include: 
+      - wwwroot
 
 pool:
   vmImage: ubuntu-latest
