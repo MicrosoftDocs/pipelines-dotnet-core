@@ -5,7 +5,7 @@
 
 parameters:
 - name: succeed
-  displayName: Succeed or fail
+  displayName: Succeed
   type: boolean
   default: false
 
@@ -30,3 +30,17 @@ jobs:
     condition: eq(${{ parameters.succeed}}, false)
   - script: dotnet build --configuration $(buildConfiguration)
     displayName: 'dotnet build $(buildConfiguration)'
+
+- job: ErrorHandler
+  dependsOn: Build
+  condition: failed()
+  steps: 
+  - bash: |
+      az boards work-item create \
+        --title "Build $(build.buildNumber) failed" \
+        --type bug \
+        --org $(System.TeamFoundationCollectionUri) \
+        --project $(System.TeamProject)
+    env: 
+      AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+    displayName: 'Create work item on failure'
