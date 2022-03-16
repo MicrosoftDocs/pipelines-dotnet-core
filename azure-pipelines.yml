@@ -1,0 +1,26 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+    arguments: '--configuration Release'
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'MPN-PPDAC(44784d4c-6035-4ca7-a965-76c30dc01901)'
+    appType: 'webAppLinux'
+    appName: 'Pipelines Demo'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    runtimeStack: 'DOTNETCORE|6.0'
+    startUpCommand: 'dotnet run'
