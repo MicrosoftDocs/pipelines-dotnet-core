@@ -6,7 +6,7 @@
 trigger:
 - master
 
-pool: ryanssurfacebook
+pool: default
 #  vmImage: ubuntu-latest
 
 
