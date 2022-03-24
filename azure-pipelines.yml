@@ -8,8 +8,8 @@ trigger:
 - main
 - feature/*
 
-pool: default
-#  vmImage: ubuntu-latest
+pool: 
+  vmImage: ubuntu-latest
 
 
 variables:
