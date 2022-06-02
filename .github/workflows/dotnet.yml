@@ -45,4 +45,4 @@ jobs:
         with:
           app-name: GitHubApp-23817416
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }}
-          package: webapps
+          package: webapp
