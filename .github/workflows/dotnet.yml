@@ -31,3 +31,18 @@ jobs:
         name: webapp
         path: website/**
         if-no-files-found: warn
+  deploy: 
+      runs-on: ubuntu-latest
+      needs: build 
+      steps:
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v2.1.0
+        with:
+          name: webapp
+          path: webapp
+      - name: Deploy web app
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: GitHubApp-23817416
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }}
+          package: webapps
