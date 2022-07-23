@@ -22,7 +22,7 @@ namespace pipelines_dotnet_core
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(builder =>
                 {
-                    builder.UseStartup<Startup>();
+                    builder.UseStartup<Startup2>();
                 });
                 
     }
