@@ -40,7 +40,7 @@ stages:
 
   - stage: build
     displayName: Build Stage
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+    #condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
     jobs:
       - job: build
         displayName: build pipeline-dotnet-core
