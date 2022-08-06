@@ -3,15 +3,13 @@
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-trigger: none
-# - master
-# - feature/*
+trigger: 
+ - feature.*
 
 pr:
   branches:
     include:
     - master
-    - feature/*
 
 pool:
   vmImage: ubuntu-latest
@@ -37,6 +35,7 @@ stages:
 
   - stage: build
     displayName: Build Stage
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
     jobs:
       - job: build
         displayName: build pipeline-dotnet-core
@@ -59,7 +58,7 @@ stages:
 
         # this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
         - task: PublishPipelineArtifact@1
-          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+          # condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
           displayName: publish artifact to myWebsiteName
           inputs:
             targetPath: '$(Build.ArtifactStagingDirectory)' 
