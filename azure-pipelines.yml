@@ -3,9 +3,15 @@
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-trigger:
-- master
-- feature/*
+trigger: none
+# - master
+# - feature/*
+
+pr:
+  branches:
+    include:
+    - master
+    - feature/*
 
 pool:
   vmImage: ubuntu-latest
@@ -14,7 +20,23 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
+  - stage: PR
+    displayName: Pull Request
+    condition: eq(variables['Build.Reason'], 'PullRequest')
+    jobs:
+      - job: build
+        displayName: build pipeline-dotnet-core
+        continueOnError: false
+        steps:
+        - task: DotNetCoreCLI@2
+          displayName: build
+          inputs:
+            command: 'build'
+            arguments: '--configuration $(buildConfiguration)'
+            displayName: 'dotnet build $(buildConfiguration)'
+
   - stage: build
+    displayName: Build
     jobs:
       - job: build
         displayName: build pipeline-dotnet-core
@@ -29,6 +51,7 @@ stages:
         
         - task: DotNetCoreCLI@2
           displayName: publish
+          condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
           inputs:
             command: publish
             publishWebProjects: True
