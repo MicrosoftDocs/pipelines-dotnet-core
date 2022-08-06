@@ -51,7 +51,6 @@ stages:
         
         - task: DotNetCoreCLI@2
           displayName: publish
-          condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
           inputs:
             command: publish
             publishWebProjects: True
