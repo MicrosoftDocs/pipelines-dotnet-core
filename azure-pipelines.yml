@@ -21,6 +21,7 @@ variables:
 
 stages:
   - stage: PR
+    dependsOn: none
     displayName: Pull Request Stage
     condition: eq(variables['Build.Reason'], 'PullRequest')
     jobs:
