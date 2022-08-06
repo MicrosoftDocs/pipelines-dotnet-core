@@ -5,6 +5,7 @@
 
 trigger:
 - master
+- feature/*
 
 pool:
   vmImage: ubuntu-latest
@@ -19,19 +20,15 @@ stages:
         displayName: build pipeline-dotnet-core
         continueOnError: false
         steps:
-        # - task: DotNetCoreCLI@2
-        #   inputs:
-        #     command: 'restore'
-        #     feedsToUse: 'select'
-        #     vstsFeed: 'my-vsts-feed' # A series of numbers and letters
-
         - task: DotNetCoreCLI@2
+          displayName: build
           inputs:
             command: 'build'
             arguments: '--configuration $(buildConfiguration)'
             displayName: 'dotnet build $(buildConfiguration)'
         
         - task: DotNetCoreCLI@2
+          displayName: publish
           inputs:
             command: publish
             publishWebProjects: True
@@ -40,6 +37,7 @@ stages:
 
         # this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
         - task: PublishPipelineArtifact@1
+          displayName: publish artifact to myWebsiteName
           inputs:
             targetPath: '$(Build.ArtifactStagingDirectory)' 
             artifactName: 'myWebsiteName'
