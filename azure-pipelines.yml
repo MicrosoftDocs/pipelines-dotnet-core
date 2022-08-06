@@ -21,7 +21,6 @@ variables:
 
 stages:
   - stage: PR
-    dependsOn: none
     displayName: Pull Request Stage
     condition: eq(variables['Build.Reason'], 'PullRequest')
     jobs:
@@ -38,6 +37,7 @@ stages:
 
   - stage: build
     displayName: Build Stage
+    dependsOn: none
     jobs:
       - job: build
         displayName: build pipeline-dotnet-core
