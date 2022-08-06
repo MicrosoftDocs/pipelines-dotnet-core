@@ -9,7 +9,7 @@ trigger:
     - feature/*
   tags:
     include:
-      - feature.*
+      - feature/feature.*
 
 pr:
   branches:
