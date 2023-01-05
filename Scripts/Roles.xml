@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Roles xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <Role>
+    <ID>1</ID>
+    <Name>Role 1</Name>
+    <ObjectName>Role 1</ObjectName>
+    <Description>Description for role 1</Description>
+    <Membership>
+      <User>
+        <Name>User 1</Name>
+      </User>
+      <User>
+        <Name>User 2</Name>
+      </User>
+    </Membership>
+    <RetainRoles>true</RetainRoles>
+    <RetainMembers>true</RetainMembers>
+  </Role>
+</Roles>

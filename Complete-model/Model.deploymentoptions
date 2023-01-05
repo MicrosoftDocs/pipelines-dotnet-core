@@ -1,0 +1,15 @@
+<DeploymentOptions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                    xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" 
+                    xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:ddl200="http://schemas.microsoft.com/analysisservices/2010/engine/200" 
+                    xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200">
+                    <TransactionalDeployment>false</TransactionalDeployment>
+                    <PartitionDeployment>DeployPartitions</PartitionDeployment>
+                    <RoleDeployment>DeployRolesRetainMembers</RoleDeployment>
+                    <ProcessingOption>DoNotProcess</ProcessingOption>
+                    <ADALCache>None</ADALCache>
+                    <OutputScript></OutputScript>
+                    <ImpactAnalysisFile></ImpactAnalysisFile>
+                    <ConfigurationSettingsDeployment>Deploy</ConfigurationSettingsDeployment>
+                    <OptimizationSettingsDeployment>Deploy</OptimizationSettingsDeployment>
+                    <WriteBackTableCreation>UseExisting</WriteBackTableCreation>
+                </DeploymentOptions>

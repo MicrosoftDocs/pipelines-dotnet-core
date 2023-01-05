@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Partitions xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <Partition>
+    <ID>1</ID>
+    <Name>Partition 1</Name>
+    <ObjectName>Partition 1</ObjectName>
+    <Description>Description for partition 1</Description>
+    <Source>
+      <DataSourceID>1</DataSourceID>
+      <DataSourceViewID>1</DataSourceViewID>
+      <Query>SELECT * FROM MyTable</Query>
+    </Source>
+    <EstimatedRows>1000</EstimatedRows>
+    <partitions>true</partitions>
+  </Partition>
+</Partitions>
