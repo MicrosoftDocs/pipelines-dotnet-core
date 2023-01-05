@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ASDeployment xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <Project>Model</Project>
+  <Server>localhost</Server>
+  <Database>AdventureWorks2017</Database>
+  <Model>Model.asdatabase</Model>
+  <ModelDeploymentOptions>Model.deploymentoptions</ModelDeploymentOptions>
+</ASDeployment>
+
+<!--<
+?xml version="1.0" encoding="utf-8"?>
+<ASDeployment xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <Project>AdventureWorks2017</Project>
+  <Server>localhost</Server>
+  <Database>AdventureWorks2017</Database>
+  <Model>Model.asdatabase</Model>
+  <ModelDeploymentOptions>Model.deploymentoptions</ModelDeploymentOptions>
+  <ModelConfigSettings>Model.configsettings</ModelConfigSettings>
+  <Partitions>Partitions.xml</Partitions>
+  <Roles>Roles.xml</Roles>
+  <AllowUserInteraction>true</AllowUserInteraction>
+  <BackupDatabase>true</BackupDatabase>
+  <Source>source_database.asdatabase</Source>
+</ASDeployment>
+-->
