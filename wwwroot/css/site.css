@@ -3,6 +3,7 @@ for details on configuring this project to bundle and minify static web assets. 
 
 a.navbar-brand {
   white-space: normal;
+  
   text-align: center;
   word-break: break-all;
 }
@@ -10,7 +11,7 @@ a.navbar-brand {
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+  font-size: 15px;
 }
 @media (min-width: 768px) {
   html {
