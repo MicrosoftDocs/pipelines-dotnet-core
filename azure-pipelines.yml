@@ -24,7 +24,7 @@ steps:
 
 - script: |
     cd '$(Build.SourcesDirectory)/C:/Users/gabri/Desktop/COM769-B00575451-WebApp'
-    dotnet test --configuration $(buildConfiguration) --logger trx --results-directory $(Build.ArtifactStagingDirectory)/test-results
+    dotnet test --configuration $(buildConfiguration) --logger trx --results-directory $(Build.ArtifactStagingDirectory)/test-results /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
   displayName: 'dotnet test'
 
 - task: PublishTestResults@2
@@ -36,3 +36,11 @@ steps:
     failTaskOnFailedTests: true
     publishRunAttachments: true
     testRunTitle: 'Unit Tests'
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '$(Build.ArtifactStagingDirectory)/test-results/coverage.cobertura.xml'
+    reportDirectory: '$(Build.ArtifactStagingDirectory)/codecoverage'
+    additionalCodeCoverageFiles: |
+      $(Build.SourcesDirectory)/C:/Users/gabri/Desktop/COM769-B00575451-WebApp/**/coverage.cobertura.xml
