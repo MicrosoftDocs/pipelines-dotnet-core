@@ -4,42 +4,25 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- main
-
+- master
 pool:
-  name: Azure Pipelines
-  vmImage: 'windows-2022'
- 
+  vmImage: 'ubuntu-latest'
+  demands:
+steps:
+- task: UseDotNet@2
+  inputs:
+    version: '6.x'
+steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK'
+  inputs:
+    version: 6.x
+    performMultiLevelLookup: true
+    includePreviewVersions: true # Required for preview versions
 variables:
   buildConfiguration: 'Release'
- 
+
 steps:
-task: UseDotNet@2
-displayName: 'Use .NET Core 6'
-inputs:
-  version: 6.0.x
+- script: dotnet build --configuration $(buildConfiguration)
+  displayName: 'dotnet build $(buildConfiguration)'
 
-task: DotNetCoreCLI@2
-displayName: Restore
-inputs:
-  command: restore
-  projects: '*/.csproj'
-
-task: DotNetCoreCLI@2
-displayName: Build
-inputs:
-  projects: '*/.csproj'
-
-task: DotNetCoreCLI@2
-displayName: Publish
-inputs:
-  command: publish
-  publishWebProjects: false
-  projects: '*/.csproj'
-  arguments: '--configuration release --output $(build.artifactstagingdirectory) /property:PublishWithAspNetCoreTargetManifest=false'
-  zipAfterPublish: false
-
-task: PublishBuildArtifacts@1
-displayName: 'Publish Artifact'
-inputs:
-  ArtifactName: myproject
