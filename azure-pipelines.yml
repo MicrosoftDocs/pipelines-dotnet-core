@@ -21,7 +21,6 @@ steps:
     includePreviewVersions: true # Required for preview versions
 variables:
   buildConfiguration: 'Release'
-
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
