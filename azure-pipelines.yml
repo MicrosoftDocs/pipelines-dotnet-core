@@ -4,14 +4,42 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+- main
 
 pool:
-  vmImage: ubuntu-latest
-
+  name: Azure Pipelines
+  vmImage: 'windows-2022'
+ 
 variables:
   buildConfiguration: 'Release'
-
+ 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+task: UseDotNet@2
+displayName: 'Use .NET Core 6'
+inputs:
+  version: 6.0.x
+
+task: DotNetCoreCLI@2
+displayName: Restore
+inputs:
+  command: restore
+  projects: '*/.csproj'
+
+task: DotNetCoreCLI@2
+displayName: Build
+inputs:
+  projects: '*/.csproj'
+
+task: DotNetCoreCLI@2
+displayName: Publish
+inputs:
+  command: publish
+  publishWebProjects: false
+  projects: '*/.csproj'
+  arguments: '--configuration release --output $(build.artifactstagingdirectory) /property:PublishWithAspNetCoreTargetManifest=false'
+  zipAfterPublish: false
+
+task: PublishBuildArtifacts@1
+displayName: 'Publish Artifact'
+inputs:
+  ArtifactName: myproject
