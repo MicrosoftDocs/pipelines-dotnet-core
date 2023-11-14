@@ -4,26 +4,32 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- build_pipeline_test
+- master
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: windows-latest
 
 variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '6.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- script: dotnet build --configuration $(buildConfiguration) --source '$(Build.SourcesDirectory)/C:/Users/gabri/Desktop/COM769-B00575451-WebApp' 
   displayName: 'dotnet build $(buildConfiguration)'
 
-- script: dotnet test --configuration $(buildConfiguration) --logger trx --results-directory $(Build.ArtifactStagingDirectory)/test-results
+- script: dotnet test --configuration $(buildConfiguration) --logger trx --results-directory $(Build.ArtifactStagingDirectory)/test-results '$(Build.SourcesDirectory)/C:/Users/gabri/Desktop/COM769-B00575451-WebApp'
   displayName: 'dotnet test'
 
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'VSTest'
     testResultsFiles: '$(Build.ArtifactStagingDirectory)/test-results/*.trx'
-    searchFolder: '$(System.DefaultWorkingDirectory)'
+    searchFolder: '$(Build.SourcesDirectory)/C:/Users/gabri/Desktop/COM769-B00575451-WebApp'
     mergeTestResults: true
     failTaskOnFailedTests: true
     publishRunAttachments: true
