@@ -12,7 +12,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     version: '6.x'
-steps:
+
 - task: UseDotNet@2
   displayName: 'Install .NET Core SDK'
   inputs:
@@ -22,7 +22,6 @@ steps:
 variables:
   buildConfiguration: 'Release'
 
-steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
