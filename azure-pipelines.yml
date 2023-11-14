@@ -22,7 +22,9 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration) --source '$(Build.SourcesDirectory)/C:/Users/gabri/Desktop/COM769-B00575451-WebApp' 
   displayName: 'dotnet build $(buildConfiguration)'
 
-- script: dotnet test --configuration $(buildConfiguration) --logger trx --results-directory $(Build.ArtifactStagingDirectory)/test-results '$(Build.SourcesDirectory)/C:/Users/gabri/Desktop/COM769-B00575451-WebApp'
+- script: |
+    cd '$(Build.SourcesDirectory)/C:/Users/gabri/Desktop/COM769-B00575451-WebApp'
+    dotnet test --configuration $(buildConfiguration) --logger trx --results-directory $(Build.ArtifactStagingDirectory)/test-results
   displayName: 'dotnet test'
 
 - task: PublishTestResults@2
