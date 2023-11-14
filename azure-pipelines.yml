@@ -1,0 +1,46 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+pool:
+  vmImage: windows-latest
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '6.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- script: dotnet build --configuration $(buildConfiguration) --source '$(Build.SourcesDirectory)/C:/Users/gabri/Desktop/COM769-B00575451-WebApp' 
+  displayName: 'dotnet build $(buildConfiguration)'
+
+- script: |
+    cd '$(Build.SourcesDirectory)/C:/Users/gabri/Desktop/COM769-B00575451-WebApp'
+    dotnet test --configuration $(buildConfiguration) --logger trx --results-directory $(Build.ArtifactStagingDirectory)/test-results /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+  displayName: 'dotnet test'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'VSTest'
+    testResultsFiles: '$(Build.ArtifactStagingDirectory)/test-results/*.trx'
+    searchFolder: '$(Build.SourcesDirectory)/C:/Users/gabri/Desktop/COM769-B00575451-WebApp'
+    mergeTestResults: true
+    failTaskOnFailedTests: true
+    publishRunAttachments: true
+    testRunTitle: 'Unit Tests'
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '$(Build.ArtifactStagingDirectory)/test-results/coverage.cobertura.xml'
+    reportDirectory: '$(Build.ArtifactStagingDirectory)/codecoverage'
+    additionalCodeCoverageFiles: |
+      $(Build.SourcesDirectory)/C:/Users/gabri/Desktop/COM769-B00575451-WebApp/**/coverage.cobertura.xml
