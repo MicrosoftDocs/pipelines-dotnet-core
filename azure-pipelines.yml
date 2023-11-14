@@ -8,6 +8,8 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
   demands:
+variables:
+  buildConfiguration: 'Release'
 steps:
 - task: UseDotNet@2
   inputs:
@@ -19,8 +21,6 @@ steps:
     version: 6.x
     performMultiLevelLookup: true
     includePreviewVersions: true # Required for preview versions
-variables:
-  buildConfiguration: 'Release'
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
